@@ -14,10 +14,6 @@ Manual de consulta gratuito para quem está começando a programar. Reúne 20 li
 - **Busca:** encontra comandos e termos em todas as linguagens.
 - Funciona no computador, no tablet e no celular, nos temas claro e escuro.
 
-## Como usar
-
-Baixe os arquivos e abra o `index.html` no navegador. Não precisa instalar nada.
-
 ## Arquivos
 
 | Arquivo | O que é |
