@@ -209,6 +209,7 @@ a.pilula:hover { border-color: var(--accent); color: var(--accent); }
 .cartao:hover { border-color: var(--accent); transform: translateY(-1px); }
 .cartao-topo { display: flex; align-items: center; gap: 8px; }
 .cartao-topo h3 { font-size: 16px; }
+.cartao-topo .logo { width: 24px; height: 24px; }
 .cartao-topo .ext { margin-left: auto; font-family: var(--f-mono); font-size: 12px; color: var(--muted); }
 .cartao p { font-size: 13.5px; color: var(--muted); line-height: 1.5; }
 .dific { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); white-space: nowrap; }
@@ -302,6 +303,29 @@ pre code { color: var(--fg); white-space: pre; }
 .conceitos a:hover { border-color: var(--accent); }
 .conceitos a.ativo { background: var(--fg); color: var(--bg); border-color: var(--fg); }
 .comp { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: 12px; }
+.filtro {
+  display: grid; gap: 12px; padding: 14px 16px; border-radius: var(--r);
+  background: var(--surface); border: 1px solid var(--line);
+}
+.filtro-cab { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 12px; }
+.filtro-cab .leve { font-size: 13px; font-variant-numeric: tabular-nums; }
+.filtro-cab .mini:first-of-type { margin-left: auto; }
+.mini {
+  font: 500 13px var(--f-body); color: var(--accent); background: none; border: 0;
+  padding: 4px 8px; border-radius: 6px; cursor: pointer;
+}
+.mini:hover { background: var(--sunk); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px 5px 8px; border-radius: 999px;
+  border: 1px solid var(--line); background: var(--bg); color: var(--muted);
+  font: 500 13px var(--f-body); cursor: pointer; transition: background .12s, border-color .12s;
+}
+.chip:hover { border-color: var(--accent); }
+.chip .logo { width: 16px; height: 16px; opacity: .45; filter: grayscale(1); }
+.chip[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); color: var(--fg); }
+.chip[aria-pressed="true"] .logo { opacity: 1; filter: none; }
+.chip[aria-pressed="true"] .logo.escuro { filter: var(--logo-inv); }
 .comp-item { display: grid; gap: 8px; align-content: start; min-width: 0; }
 .comp-item > a { display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--fg); font-weight: 600; font-family: var(--f-display); }
 .comp-item > a:hover { color: var(--accent); }
@@ -2303,7 +2327,7 @@ function pagInicio() {
   const cartoes = ORDEM.map((id) => {
     const l = L[id];
     return `<a class="cartao" href="#${id}">
-      <div class="cartao-topo">${dot(id)}<h3>${esc(l.nome)}</h3><span class="ext">${l.ext}</span></div>
+      <div class="cartao-topo">${logo(id)}<h3>${esc(l.nome)}</h3><span class="ext">${l.ext}</span></div>
       <p>${esc(l.usos.slice(0, 3).join(" · "))}</p>
       ${barras(l.dif)}
     </a>`;
@@ -2416,10 +2440,22 @@ function pagLinguagem(id) {
 }
 
 /* ---------- Comparar ---------- */
-function pagComparar(k) {
-  const conceito = CONCEITOS.find((c) => c.k === k) || CONCEITOS[1];
-  const ordemMenu = CATS.flatMap((cat) => ORDEM.filter((id) => L[id].cat === cat));
-  const itens = ordemMenu.map((id) => {
+const ORDEM_MENU = CATS.flatMap((cat) => ORDEM.filter((id) => L[id].cat === cat));
+let SEL = null, compAtual = null;
+/* Começa sempre com tudo desmarcado; a escolha vale enquanto a página estiver aberta. */
+function carregarSel() { return new Set(); }
+function salvarSel() {}
+
+function renderComp() {
+  const conceito = compAtual;
+  const escolhidas = ORDEM_MENU.filter((id) => SEL.has(id));
+  $("#selCont").textContent = `${escolhidas.length} de ${ORDEM.length} escolhidas`;
+  document.querySelectorAll(".chip[data-lang]").forEach((b) => b.setAttribute("aria-pressed", String(SEL.has(b.dataset.lang))));
+  if (!escolhidas.length) {
+    $("#comp").innerHTML = `<p class="nota">Escolha acima as linguagens que você quer comparar, ou clique em “Marcar todas”.</p>`;
+    return;
+  }
+  $("#comp").innerHTML = escolhidas.map((id) => {
     const it = conc(id, conceito.k);
     let corpo = "";
     if (!it) corpo = `<p class="nota">${esc(L[id].semConceito || `Não existe em ${L[id].nome}.`)}</p>`;
@@ -2429,6 +2465,13 @@ function pagComparar(k) {
     }
     return `<div class="comp-item"><a href="#${L[id].marcacao ? id : `${id}-${conceito.k}`}">${dot(id)}${esc(L[id].nome)}</a>${corpo}</div>`;
   }).join("");
+}
+
+function pagComparar(k) {
+  const conceito = CONCEITOS.find((c) => c.k === k) || CONCEITOS[1];
+  compAtual = conceito;
+  if (!SEL) SEL = carregarSel();
+  const chips = ORDEM_MENU.map((id) => `<button type="button" class="chip" data-lang="${id}" aria-pressed="${SEL.has(id)}">${logo(id)}${esc(L[id].nome)}</button>`).join("");
 
   main.innerHTML = `
     <section class="hero">
@@ -2439,9 +2482,19 @@ function pagComparar(k) {
     <section class="secao">
       <nav class="conceitos" aria-label="Escolha o conceito">${CONCEITOS.map((c) => `<a href="#comparar-${c.k}" class="${c.k === conceito.k ? "ativo" : ""}">${esc(c.t)}</a>`).join("")}</nav>
       <p class="leve">HTML, CSS e SQL não são linguagens de programação de uso geral. Quando um conceito não existe nelas, o cartão explica o porquê.
-      <div class="comp">${itens}</div>
+      <div class="filtro">
+        <div class="filtro-cab">
+          <span class="rotulo">Linguagens para comparar</span>
+          <span class="leve" id="selCont"></span>
+          <button type="button" class="mini" data-sel="todas">Marcar todas</button>
+          <button type="button" class="mini" data-sel="nenhuma">Limpar</button>
+        </div>
+        <div class="chips" role="group" aria-label="Escolha as linguagens">${chips}</div>
+      </div>
+      <div class="comp" id="comp"></div>
     </section>
     ${rodape()}`;
+  renderComp();
   marcarAtivo(null, "comparar");
 }
 
@@ -2577,6 +2630,23 @@ document.addEventListener("click", (e) => {
 });
 
 window.addEventListener("hashchange", rota);
+
+/* ---------- Escolher linguagens no Comparar ---------- */
+document.addEventListener("click", (e) => {
+  const chip = e.target.closest(".chip[data-lang]");
+  const acao = e.target.closest("[data-sel]");
+  if (!chip && !acao) return;
+  if (chip) {
+    const id = chip.dataset.lang;
+    if (SEL.has(id)) SEL.delete(id); else SEL.add(id);
+  } else if (acao.dataset.sel === "todas") {
+    SEL = new Set(ORDEM);
+  } else {
+    SEL = new Set();
+  }
+  salvarSel();
+  renderComp();
+});
 
 /* ---------- Menu (três risquinhos) ---------- */
 const lateral = $("#lateral"), veu = $("#veu"), menuBtn = $("#menuBtn");
