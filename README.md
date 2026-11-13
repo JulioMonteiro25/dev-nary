@@ -2,7 +2,6 @@
 
 **Acesse o app:** https://juliomonteiro25.github.io/dev-nary/
 
-Também disponível em: https://claude.ai/artifact/BqHgr7iF5q4cGxTdkDwRsQ
 
 Manual de consulta gratuito para quem está começando a programar. Reúne 20 linguagens explicadas em português, com os comandos principais e exemplos prontos para copiar.
 
