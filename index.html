@@ -1,0 +1,2604 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Manual de consulta para iniciantes: 20 linguagens de programaÃ§Ã£o explicadas em portuguÃªs, com comandos, exemplos e comparaÃ§Ã£o lado a lado.">
+<style>
+body { margin: 0; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+</style>
+<title>Dicionário do Programador</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap">
+<style>
+/* Layout: dicionário de consulta — cabeçalho fixo com busca, índice lateral de linguagens, verbetes em coluna central */
+:root {
+  --bg: #F3F5F8;
+  --surface: #FFFFFF;
+  --sunk: #E9EDF3;
+  --fg: #131822;
+  --muted: #586274;
+  --line: #D8DEE7;
+  --accent: #1E57CF;
+  --accent-ink: #FFFFFF;
+  --accent-soft: #E2EAFA;
+  --code-bg: #F7F9FC;
+  --c-kw: #B0245A;
+  --c-str: #1B7642;
+  --c-com: #7A8496;
+  --c-num: #A85400;
+  --c-fn: #1E57CF;
+  --c-type: #7339BD;
+  --c-attr: #0A6A7E;
+  --ok: #1B7642;
+  --warn: #A85400;
+
+  --f-display: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+  --f-body: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+
+  --logo-inv: none;
+  --veu: rgba(19, 24, 34, 0.35);
+  --r: 10px;
+  --header-h: 64px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0D1117; --surface: #141A23; --sunk: #1A2230; --fg: #E5E9F0; --muted: #95A0B3; --line: #263041;
+    --accent: #79A2FF; --accent-ink: #0A1022; --accent-soft: #1A2742; --code-bg: #0F151E;
+    --c-kw: #FF7FAA; --c-str: #82D49E; --c-com: #6C788C; --c-num: #FFB46E; --c-fn: #86B2FF; --c-type: #CBA5FF; --c-attr: #6FD0E3;
+    --ok: #82D49E; --warn: #FFB46E;
+    --logo-inv: invert(1) hue-rotate(180deg);
+    --veu: rgba(0, 0, 0, 0.55);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0D1117; --surface: #141A23; --sunk: #1A2230; --fg: #E5E9F0; --muted: #95A0B3; --line: #263041;
+  --accent: #79A2FF; --accent-ink: #0A1022; --accent-soft: #1A2742; --code-bg: #0F151E;
+  --c-kw: #FF7FAA; --c-str: #82D49E; --c-com: #6C788C; --c-num: #FFB46E; --c-fn: #86B2FF; --c-type: #CBA5FF; --c-attr: #6FD0E3;
+  --ok: #82D49E; --warn: #FFB46E;
+  --logo-inv: invert(1) hue-rotate(180deg);
+  --veu: rgba(0, 0, 0, 0.55);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--f-body);
+  font-size: 15px;
+  line-height: 1.6;
+}
+a { color: var(--accent); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--surface);
+}
+
+/* ---------- Cabeçalho ---------- */
+.topo {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+}
+.topo-in {
+  max-width: 1280px; margin: 0 auto;
+  padding-block: 12px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: flex; align-items: center; gap: 20px;
+}
+.marca {
+  display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--fg);
+  font-family: var(--f-display); font-weight: 700; font-size: 18px; letter-spacing: -0.01em; white-space: nowrap;
+}
+.marca-icone {
+  display: grid; place-items: center; width: 34px; height: 34px; border-radius: 8px;
+  background: var(--fg); color: var(--bg); font-family: var(--f-mono); font-size: 14px; font-weight: 600;
+}
+.busca { flex: 1; max-width: 460px; position: relative; }
+.busca input {
+  width: 100%; height: 40px; border-radius: 8px; border: 1px solid var(--line);
+  background: var(--bg); color: var(--fg); font: inherit; padding: 0 12px 0 38px;
+}
+.busca input::placeholder { color: var(--muted); }
+.busca svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); }
+.links { display: flex; gap: 4px; margin-left: auto; }
+.links a {
+  text-decoration: none; color: var(--muted); font-weight: 500; padding: 8px 12px; border-radius: 8px; white-space: nowrap;
+}
+.links a:hover { color: var(--fg); background: var(--sunk); }
+.links a.ativo { color: var(--fg); background: var(--sunk); }
+
+/* ---------- Corpo ---------- */
+.corpo {
+  max-width: 1280px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.lateral {
+  position: fixed; top: 0; bottom: 0; left: 0; z-index: 40;
+  width: min(300px, 85vw); overflow-y: auto;
+  background: var(--surface); border-right: 1px solid var(--line);
+  padding-top: calc(env(safe-area-inset-top, 0px) + 14px);
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 32px);
+  padding-left: calc(env(safe-area-inset-left, 0px) + 20px);
+  padding-right: 20px;
+  transform: translateX(-100%); visibility: hidden;
+  transition: transform .22s ease, visibility .22s;
+}
+.lateral.aberto { transform: none; visibility: visible; box-shadow: 0 10px 40px var(--veu); }
+.lateral-cab { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+.lateral-cab strong { font-family: var(--f-display); font-size: 17px; }
+.veu { position: fixed; inset: 0; z-index: 35; background: var(--veu); }
+.icone-btn {
+  display: grid; place-items: center; width: 40px; height: 40px; flex: none; cursor: pointer;
+  border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--fg);
+}
+.icone-btn:hover { background: var(--sunk); }
+.grupo + .grupo { margin-top: 20px; }
+.grupo h4 {
+  margin: 0 0 6px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600;
+}
+.grupo a {
+  display: flex; align-items: center; gap: 10px; padding: 5px 10px; margin-left: -10px; border-radius: 6px;
+  text-decoration: none; color: var(--fg); font-size: 14px;
+}
+.grupo a:hover { background: var(--sunk); }
+.grupo a.ativo { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+.logo { width: 18px; height: 18px; flex: none; object-fit: contain; display: block; }
+.logo.escuro { filter: var(--logo-inv); }
+.logo-sql { color: #E38C00; }
+.dot {
+  width: 10px; height: 10px; border-radius: 50%; flex: none;
+  box-shadow: 0 0 0 1px var(--line);
+}
+main { min-width: 0; max-width: 1040px; margin: 0 auto; padding-block: 28px 80px; }
+
+/* ---------- Tipografia ---------- */
+h1, h2, h3 { font-family: var(--f-display); letter-spacing: -0.015em; text-wrap: balance; line-height: 1.2; }
+h1 { font-size: clamp(30px, 4vw, 42px); margin: 0; }
+h2 { font-size: 22px; margin: 0 0 4px; }
+h3 { font-size: 17px; margin: 0; }
+.rotulo { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600; }
+.leve { color: var(--muted); }
+p { margin: 0; }
+.prosa { max-width: 68ch; }
+
+/* ---------- Início ---------- */
+.hero { padding-block: 12px 32px; border-bottom: 1px solid var(--line); display: grid; gap: 12px; }
+.hero h1 { font-size: clamp(32px, 5vw, 52px); }
+.hero p { font-size: 17px; color: var(--muted); max-width: 60ch; }
+.verbete-modelo {
+  margin-top: 8px; font-family: var(--f-mono); font-size: 13px; color: var(--muted);
+  padding: 12px 14px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); max-width: 620px;
+}
+.verbete-modelo b { color: var(--fg); font-weight: 600; }
+.verbete-modelo i { color: var(--c-kw); font-style: normal; }
+.secao { margin-top: 40px; display: grid; gap: 16px; }
+.secao-cab { display: grid; gap: 4px; }
+
+.tabela-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 520px; }
+th, td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--line); vertical-align: top; }
+tr:last-child td { border-bottom: 0; }
+th { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600; background: var(--sunk); }
+td:first-child { font-weight: 500; width: 40%; }
+.pilulas { display: flex; flex-wrap: wrap; gap: 6px; }
+.pilula {
+  display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px;
+  border: 1px solid var(--line); background: var(--bg); color: var(--fg); text-decoration: none; font-size: 13px; font-weight: 500;
+}
+a.pilula:hover { border-color: var(--accent); color: var(--accent); }
+.pilula .dot { width: 8px; height: 8px; }
+.pilula small { color: var(--muted); font-weight: 400; }
+
+.grade { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
+.cartao {
+  display: grid; gap: 8px; align-content: start; padding: 16px; border-radius: var(--r);
+  background: var(--surface); border: 1px solid var(--line); text-decoration: none; color: var(--fg);
+  transition: border-color .15s, transform .15s;
+}
+.cartao:hover { border-color: var(--accent); transform: translateY(-1px); }
+.cartao-topo { display: flex; align-items: center; gap: 8px; }
+.cartao-topo h3 { font-size: 16px; }
+.cartao-topo .ext { margin-left: auto; font-family: var(--f-mono); font-size: 12px; color: var(--muted); }
+.cartao p { font-size: 13.5px; color: var(--muted); line-height: 1.5; }
+.dific { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); white-space: nowrap; }
+.barras { display: inline-flex; gap: 3px; }
+.barras i { width: 14px; height: 5px; border-radius: 2px; background: var(--sunk); box-shadow: inset 0 0 0 1px var(--line); }
+.barras i.on { background: var(--fg); box-shadow: none; }
+
+.aviso {
+  display: grid; gap: 6px; padding: 18px 20px; border-radius: var(--r);
+  background: var(--accent-soft); border: 1px solid var(--line);
+}
+.aviso h3 { color: var(--accent); }
+
+/* ---------- Página da linguagem ---------- */
+.lp-cab { display: grid; gap: 14px; padding-bottom: 28px; border-bottom: 1px solid var(--line); }
+.lp-nome { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 14px; }
+.lp-nome .dot { width: 14px; height: 14px; align-self: center; }
+.lp-nome .logo { width: 40px; height: 40px; align-self: center; }
+.pron { font-family: var(--f-mono); font-size: 15px; color: var(--muted); }
+.classe-gram { font-size: 14px; color: var(--muted); font-style: italic; }
+.resumo { font-size: 17px; max-width: 64ch; }
+.ficha {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1px;
+  background: var(--line); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; margin: 0;
+}
+.ficha div { background: var(--surface); padding: 12px 14px; display: grid; gap: 2px; }
+.ficha dt { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600; }
+.ficha dd { margin: 0; font-weight: 500; }
+.ficha dd code { font-family: var(--f-mono); font-size: 14px; }
+.colunas { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+.colunas ul { margin: 6px 0 0; padding-left: 18px; display: grid; gap: 4px; }
+.colunas li::marker { color: var(--muted); }
+.mais li::marker { content: "+  "; color: var(--ok); font-weight: 700; }
+.menos li::marker { content: "!  "; color: var(--warn); font-weight: 700; }
+
+.indice { display: flex; flex-wrap: wrap; gap: 6px; }
+.indice a {
+  font-size: 13px; text-decoration: none; color: var(--muted); padding: 4px 10px; border-radius: 6px; background: var(--sunk);
+}
+.indice a:hover { color: var(--fg); }
+
+.verbetes { display: grid; gap: 14px; }
+.verbete {
+  display: grid; gap: 10px; padding: 18px 20px; border-radius: var(--r);
+  background: var(--surface); border: 1px solid var(--line);
+  scroll-margin-top: calc(var(--header-h) + 20px);
+}
+.verbete:target { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.vb-cab { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 12px; }
+.vb-cab .termo { font-family: var(--f-mono); font-size: 13px; color: var(--c-kw); }
+.vb-desc { color: var(--muted); max-width: 72ch; }
+.nota {
+  font-size: 13.5px; padding: 8px 12px; border-radius: 8px; background: var(--sunk); color: var(--fg); max-width: 72ch;
+}
+.nota b { font-weight: 600; }
+
+/* ---------- Código ---------- */
+.codigo { border: 1px solid var(--line); border-radius: 8px; background: var(--code-bg); overflow: hidden; min-width: 0; }
+.codigo-barra {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  padding: 4px 6px 4px 12px; border-bottom: 1px solid var(--line); font-size: 12px; color: var(--muted); font-family: var(--f-mono);
+}
+.copiar {
+  font: 500 12px var(--f-body); color: var(--muted); background: transparent; border: 1px solid transparent;
+  padding: 3px 10px; border-radius: 6px; cursor: pointer;
+}
+.copiar:hover { color: var(--fg); border-color: var(--line); background: var(--surface); }
+.copiar.feito { color: var(--ok); }
+pre { margin: 0; padding: 14px 16px; overflow-x: auto; }
+code, pre { font-family: var(--f-mono); font-size: 13.5px; line-height: 1.6; }
+pre code { color: var(--fg); white-space: pre; }
+:not(pre) > code {
+  font-size: 0.9em; padding: 1px 5px; border-radius: 4px; background: var(--sunk);
+}
+.hljs-keyword, .hljs-literal, .hljs-selector-tag, .hljs-tag, .hljs-name { color: var(--c-kw); }
+.hljs-string, .hljs-regexp, .hljs-char.escape_ { color: var(--c-str); }
+.hljs-comment, .hljs-quote { color: var(--c-com); font-style: italic; }
+.hljs-number, .hljs-symbol, .hljs-meta { color: var(--c-num); }
+.hljs-title, .hljs-section { color: var(--c-fn); }
+.hljs-type, .hljs-built_in, .hljs-title.class_, .hljs-class .hljs-title { color: var(--c-type); }
+.hljs-attr, .hljs-attribute, .hljs-property, .hljs-selector-class, .hljs-selector-id, .hljs-selector-pseudo, .hljs-variable, .hljs-template-variable { color: var(--c-attr); }
+.hljs-meta .hljs-string { color: var(--c-str); }
+.hljs-subst, .hljs-params { color: inherit; }
+
+/* ---------- Comparar ---------- */
+.conceitos { display: flex; flex-wrap: wrap; gap: 6px; }
+.conceitos a {
+  text-decoration: none; padding: 7px 14px; border-radius: 8px; font-weight: 500; font-size: 14px;
+  border: 1px solid var(--line); background: var(--surface); color: var(--fg);
+}
+.conceitos a:hover { border-color: var(--accent); }
+.conceitos a.ativo { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.comp { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: 12px; }
+.comp-item { display: grid; gap: 8px; align-content: start; min-width: 0; }
+.comp-item > a { display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--fg); font-weight: 600; font-family: var(--f-display); }
+.comp-item > a:hover { color: var(--accent); }
+
+/* ---------- Glossário ---------- */
+.letra { font-family: var(--f-display); font-size: 28px; font-weight: 700; color: var(--accent); margin-top: 18px; padding-bottom: 4px; border-bottom: 1px solid var(--line); }
+.gloss { margin: 0; display: grid; }
+.gloss div { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 4px 24px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.gloss dt { font-weight: 600; font-family: var(--f-display); }
+.gloss dt small { display: block; font-family: var(--f-mono); font-weight: 400; font-size: 12px; color: var(--muted); }
+.gloss dd { margin: 0; color: var(--fg); max-width: 70ch; }
+
+/* ---------- Busca ---------- */
+.resultados { display: grid; gap: 8px; }
+.res {
+  display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 2px 12px; align-items: baseline;
+  padding: 12px 16px; border-radius: var(--r); background: var(--surface); border: 1px solid var(--line);
+  text-decoration: none; color: var(--fg);
+}
+.res:hover { border-color: var(--accent); }
+.res .dot { align-self: center; }
+.res strong { font-weight: 600; }
+.res .sub { grid-column: 2; font-size: 13.5px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+mark { background: var(--accent-soft); color: var(--accent); border-radius: 3px; padding: 0 2px; }
+
+.navega { display: flex; justify-content: space-between; gap: 12px; margin-top: 40px; flex-wrap: wrap; }
+.navega a {
+  display: grid; gap: 2px; text-decoration: none; padding: 12px 16px; border: 1px solid var(--line); border-radius: var(--r);
+  background: var(--surface); color: var(--fg); font-weight: 600; min-width: 160px;
+}
+.navega a:hover { border-color: var(--accent); }
+.navega a:last-child { text-align: right; margin-left: auto; }
+
+footer { margin-top: 60px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); }
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 860px) {
+  .topo-in { flex-wrap: wrap; gap: 10px 12px; }
+  .busca { order: 3; flex-basis: 100%; max-width: none; }
+  .verbete { scroll-margin-top: 130px; padding: 16px; }
+  .gloss div { grid-template-columns: minmax(0, 1fr); }
+  .links { gap: 0; }
+  .links a { padding: 6px 8px; font-size: 14px; }
+}
+@media (max-width: 480px) {
+  .marca-texto { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; scroll-behavior: auto !important; }
+}
+</style>
+</head>
+<body>
+<header class="topo">
+  <div class="topo-in">
+    <button class="icone-btn" id="menuBtn" type="button" aria-label="Abrir menu de linguagens" aria-expanded="false" aria-controls="lateral">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+    <a class="marca" href="#" aria-label="Dicionário do Programador, página inicial">
+      <span class="marca-icone">{ }</span><span class="marca-texto">Dicionário do Programador</span>
+    </a>
+    <label class="busca" for="busca">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="busca" type="search" placeholder="Buscar comando ou termo: print, for, lista, SELECT…" autocomplete="off" aria-label="Buscar no dicionário">
+    </label>
+    <nav class="links" aria-label="Seções">
+      <a href="#" data-r="inicio">Início</a>
+      <a href="#comparar" data-r="comparar">Comparar</a>
+      <a href="#glossario" data-r="glossario">Glossário</a>
+    </nav>
+  </div>
+</header>
+
+<div class="corpo">
+  <nav class="lateral" id="lateral" aria-label="Linguagens"></nav>
+  <div class="veu" id="veu" hidden></div>
+  <main id="conteudo"></main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dart.min.js"></script>
+<script src="logos.js"></script>
+<script>
+/* Código dos exemplos: String.raw mantém barras invertidas (\n etc.) como estão.
+   Dentro dos exemplos, "$\{" vira "${" e "\`" vira crase. */
+const C = (s, ...v) => String.raw(s, ...v)
+  .replace(/\$\\\{/g, "${")
+  .replace(/\\`/g, "`")
+  .replace(/^\n/, "")
+  .replace(/\n\s*$/, "");
+
+const CATS = ["Web", "Uso geral", "Mobile", "Dados", "Sistemas", "Scripts e jogos"];
+
+const CONCEITOS = [
+  { k: "comentario", t: "Comentário", d: "Texto que o computador ignora. Serve para explicar o código para você mesmo e para outras pessoas." },
+  { k: "imprimir", t: "Mostrar na tela", d: "Exibe uma mensagem. É o famoso “Olá, mundo!”, geralmente o primeiro programa que se escreve." },
+  { k: "variavel", t: "Variável", d: "Uma “caixinha” com nome que guarda um valor (texto, número, verdadeiro/falso) para usar depois." },
+  { k: "condicao", t: "Condição (if / else)", d: "Faz o programa tomar decisões: se algo for verdade, faz uma coisa; senão, faz outra." },
+  { k: "for", t: "Laço for", d: "Repete um bloco de código um número definido de vezes." },
+  { k: "while", t: "Laço while", d: "Repete um bloco de código enquanto uma condição for verdadeira." },
+  { k: "funcao", t: "Função", d: "Um bloco de código com nome que recebe valores, faz algo e pode devolver um resultado. Evita repetir código." },
+  { k: "lista", t: "Lista / Array", d: "Guarda vários valores em sequência. Cada item tem uma posição (índice), que na maioria das linguagens começa em 0." },
+  { k: "mapa", t: "Dicionário / Mapa", d: "Guarda pares de chave e valor, como “nome” → “Ana”. Você encontra o valor pela chave." },
+  { k: "classe", t: "Classe e objeto", d: "Uma classe é um molde; um objeto é algo criado a partir desse molde, com seus próprios dados e ações." },
+];
+
+const DIF = ["", "Muito fácil", "Fácil", "Média", "Difícil", "Muito difícil"];
+
+/* ===================== LINGUAGENS ===================== */
+const L = {
+
+python: {
+  nome: "Python", pron: "/pái-ton/", ano: 1991, criador: "Guido van Rossum", cat: "Uso geral", cor: "#3572A5", hl: "python", ext: ".py",
+  tipo: "Interpretada", tipagem: "Dinâmica", dif: 1,
+  resumo: "Linguagem com escrita limpa, parecida com inglês. É a mais recomendada para quem está começando e uma das mais usadas no mundo.",
+  usos: ["Inteligência artificial", "Ciência de dados", "Automação de tarefas", "Sites (Django, Flask)", "Scripts e robôs"],
+  fortes: ["Fácil de ler e escrever", "Enorme quantidade de bibliotecas prontas", "Comunidade gigante, muito material em português"],
+  cuidados: ["A indentação (espaços no início da linha) faz parte da sintaxe", "Mais lenta que C, Rust ou Go"],
+  conceitos: {
+    comentario: C`
+# Isto é um comentário de uma linha
+
+"""
+Isto é um texto de várias linhas,
+muito usado como comentário (docstring)
+"""`,
+    imprimir: C`print("Olá, mundo!")`,
+    variavel: C`
+nome = "Ana"      # texto (str)
+idade = 20        # número inteiro (int)
+altura = 1.65     # número decimal (float)
+ativo = True      # verdadeiro/falso (bool)`,
+    condicao: C`
+idade = 18
+
+if idade >= 18:
+    print("Maior de idade")
+elif idade >= 12:
+    print("Adolescente")
+else:
+    print("Criança")`,
+    for: C`
+for i in range(5):    # 0, 1, 2, 3, 4
+    print(i)
+
+for fruta in ["maçã", "uva"]:
+    print(fruta)`,
+    while: C`
+contador = 0
+while contador < 3:
+    print(contador)
+    contador += 1`,
+    funcao: C`
+def somar(a, b):
+    return a + b
+
+print(somar(2, 3))  # 5`,
+    lista: C`
+frutas = ["maçã", "banana", "uva"]
+frutas.append("laranja")   # adiciona no fim
+print(frutas[0])           # maçã
+print(len(frutas))         # 4`,
+    mapa: C`
+pessoa = {"nome": "Ana", "idade": 20}
+print(pessoa["nome"])      # Ana
+pessoa["cidade"] = "Recife"`,
+    classe: C`
+class Cachorro:
+    def __init__(self, nome):
+        self.nome = nome
+
+    def latir(self):
+        print(f"{self.nome} diz: Au au!")
+
+rex = Cachorro("Rex")
+rex.latir()`,
+  },
+  extras: [
+    { t: "Ler o que o usuário digita", d: "input() espera a pessoa digitar algo e apertar Enter. O resultado é sempre texto.", c: C`
+nome = input("Qual é o seu nome? ")
+idade = int(input("Sua idade: "))   # int() converte texto em número
+print("Olá,", nome)` },
+    { t: "f-string (texto com variáveis)", d: "Coloque f antes das aspas e as variáveis entre chaves.", c: C`print(f"{nome} tem {idade} anos")` },
+    { t: "Importar uma biblioteca", d: "import traz código pronto para dentro do seu programa.", c: C`
+import math
+import random
+
+print(math.sqrt(16))           # 4.0
+print(random.randint(1, 10))   # número sorteado de 1 a 10` },
+    { t: "Instalar pacotes com pip", d: "Comando digitado no terminal, não dentro do código Python.", hl: "bash", c: C`pip install requests` },
+    { t: "Tratar erros (try / except)", d: "Evita que o programa pare quando algo dá errado.", c: C`
+try:
+    numero = int(input("Digite um número: "))
+except ValueError:
+    print("Isso não é um número!")` },
+    { t: "List comprehension", d: "Forma curta de criar uma lista a partir de outra.", c: C`
+quadrados = [n * n for n in range(5)]   # [0, 1, 4, 9, 16]
+pares = [n for n in range(10) if n % 2 == 0]` },
+  ],
+},
+
+javascript: {
+  nome: "JavaScript", pron: "/djá-va-scrípt/", ano: 1995, criador: "Brendan Eich", cat: "Web", cor: "#F1E05A", hl: "javascript", ext: ".js",
+  tipo: "Interpretada (no navegador ou Node.js)", tipagem: "Dinâmica", dif: 2,
+  resumo: "A linguagem dos navegadores. Todo site interativo usa JavaScript, e com o Node.js ela também roda em servidores.",
+  usos: ["Interatividade em sites", "Back-end com Node.js", "Apps mobile (React Native)", "Extensões de navegador", "Jogos para web"],
+  fortes: ["Roda em qualquer navegador, sem instalar nada", "Serve tanto para front-end quanto back-end", "Mercado de trabalho enorme"],
+  cuidados: ["Algumas regras são confusas (== e === são diferentes)", "Muitos frameworks; é fácil se perder"],
+  conceitos: {
+    comentario: C`
+// Comentário de uma linha
+
+/* Comentário
+   de várias linhas */`,
+    imprimir: C`console.log("Olá, mundo!");`,
+    variavel: C`
+let nome = "Ana";      // let: o valor pode mudar
+const idade = 20;      // const: o valor não pode mudar
+let ativo = true;
+// var também existe, mas é antigo: prefira let e const`,
+    condicao: C`
+const idade = 18;
+
+if (idade >= 18) {
+  console.log("Maior de idade");
+} else if (idade >= 12) {
+  console.log("Adolescente");
+} else {
+  console.log("Criança");
+}`,
+    for: C`
+for (let i = 0; i < 5; i++) {
+  console.log(i);   // 0, 1, 2, 3, 4
+}
+
+for (const fruta of ["maçã", "uva"]) {
+  console.log(fruta);
+}`,
+    while: C`
+let contador = 0;
+while (contador < 3) {
+  console.log(contador);
+  contador++;
+}`,
+    funcao: C`
+function somar(a, b) {
+  return a + b;
+}
+
+// Arrow function (forma curta)
+const dobro = (n) => n * 2;
+
+console.log(somar(2, 3)); // 5
+console.log(dobro(4));    // 8`,
+    lista: C`
+const frutas = ["maçã", "banana", "uva"];
+frutas.push("laranja");        // adiciona no fim
+console.log(frutas[0]);        // maçã
+console.log(frutas.length);    // 4`,
+    mapa: C`
+const pessoa = { nome: "Ana", idade: 20 };
+console.log(pessoa.nome);      // Ana
+pessoa.cidade = "Recife";`,
+    classe: C`
+class Cachorro {
+  constructor(nome) {
+    this.nome = nome;
+  }
+
+  latir() {
+    console.log(\`$\{this.nome} diz: Au au!\`);
+  }
+}
+
+const rex = new Cachorro("Rex");
+rex.latir();`,
+  },
+  extras: [
+    { t: "Template string (texto com variáveis)", d: "Use crases e coloque a variável dentro de ${ }.", c: C`
+const nome = "Ana";
+console.log(\`Olá, $\{nome}! Você tem $\{20 + 1} anos.\`);` },
+    { t: "Pegar um elemento da página e reagir a cliques", d: "É assim que o JavaScript conversa com o HTML.", c: C`
+const botao = document.querySelector("#enviar");
+
+botao.addEventListener("click", () => {
+  document.querySelector("h1").textContent = "Você clicou!";
+});` },
+    { t: "Percorrer listas (forEach, map, filter)", d: "Métodos prontos para trabalhar com arrays.", c: C`
+const numeros = [1, 2, 3, 4];
+
+numeros.forEach(n => console.log(n));
+const dobros = numeros.map(n => n * 2);         // [2, 4, 6, 8]
+const pares = numeros.filter(n => n % 2 === 0); // [2, 4]` },
+    { t: "Buscar dados da internet (fetch)", d: "Pede informações para um servidor. O await espera a resposta chegar.", c: C`
+const resposta = await fetch("https://api.exemplo.com/usuarios");
+const dados = await resposta.json();
+console.log(dados);` },
+    { t: "Comparação: === e ==", d: "Use sempre ===, que compara valor e tipo. O == faz conversões automáticas que confundem.", c: C`
+console.log(5 === "5");  // false (número ≠ texto)
+console.log(5 == "5");   // true  (converte e compara)` },
+  ],
+},
+
+typescript: {
+  nome: "TypeScript", pron: "/táip-scrípt/", ano: 2012, criador: "Anders Hejlsberg (Microsoft)", cat: "Web", cor: "#3178C6", hl: "typescript", ext: ".ts",
+  tipo: "Compilada para JavaScript", tipagem: "Estática", dif: 3,
+  resumo: "É JavaScript com tipos. Você diz se uma variável é texto, número etc., e o editor avisa os erros antes de o programa rodar.",
+  usos: ["Sites e sistemas web grandes", "Front-end com React, Angular, Vue", "Back-end com Node.js"],
+  fortes: ["Pega erros enquanto você escreve", "O editor autocompleta muito melhor", "Tudo que vale para JavaScript vale aqui"],
+  cuidados: ["Aprenda JavaScript primeiro", "Precisa ser convertido (compilado) para JavaScript"],
+  conceitos: {
+    comentario: C`
+// Comentário de uma linha
+/* Comentário de várias linhas */`,
+    imprimir: C`console.log("Olá, mundo!");`,
+    variavel: C`
+let nome: string = "Ana";
+const idade: number = 20;
+let ativo: boolean = true;
+
+let cidade = "Recife";  // o tipo string é deduzido sozinho`,
+    condicao: C`
+const idade: number = 18;
+
+if (idade >= 18) {
+  console.log("Maior de idade");
+} else if (idade >= 12) {
+  console.log("Adolescente");
+} else {
+  console.log("Criança");
+}`,
+    for: C`
+for (let i = 0; i < 5; i++) {
+  console.log(i);
+}`,
+    while: C`
+let contador: number = 0;
+while (contador < 3) {
+  console.log(contador);
+  contador++;
+}`,
+    funcao: C`
+function somar(a: number, b: number): number {
+  return a + b;
+}
+
+const dobro = (n: number): number => n * 2;`,
+    lista: C`
+const frutas: string[] = ["maçã", "banana"];
+frutas.push("uva");
+console.log(frutas[0]);       // maçã
+console.log(frutas.length);   // 3`,
+    mapa: C`
+interface Pessoa {
+  nome: string;
+  idade: number;
+}
+
+const pessoa: Pessoa = { nome: "Ana", idade: 20 };
+const notas: Record<string, number> = { Ana: 9, Bruno: 7 };`,
+    classe: C`
+class Cachorro {
+  constructor(public nome: string) {}
+
+  latir(): void {
+    console.log(\`$\{this.nome} diz: Au au!\`);
+  }
+}
+
+const rex = new Cachorro("Rex");
+rex.latir();`,
+  },
+  extras: [
+    { t: "Tipo união", d: "Uma variável que aceita mais de um tipo.", c: C`
+let id: number | string;
+id = 10;      // ok
+id = "A10";   // também ok` },
+    { t: "Criar um tipo próprio (type)", d: "Dá um nome a uma forma de dado.", c: C`
+type Status = "ativo" | "inativo";
+let situacao: Status = "ativo";` },
+    { t: "Compilar para JavaScript", d: "Comando no terminal que converte o .ts em .js.", hl: "bash", c: C`npx tsc arquivo.ts` },
+  ],
+},
+
+html: {
+  nome: "HTML", pron: "/agá-tê-ême-éle/", ano: 1993, criador: "Tim Berners-Lee", cat: "Web", cor: "#E34C26", hl: "xml", ext: ".html",
+  tipo: "Linguagem de marcação", tipagem: "Não se aplica", dif: 1, marcacao: true,
+  semConceito: "HTML só descreve a estrutura da página e não tem esse recurso. Para isso, usa-se JavaScript junto com o HTML.",
+  conceitos: {
+    comentario: C`<!-- Isto é um comentário -->`,
+    imprimir: { nota: "Em HTML, tudo que está no <b>body</b> aparece na tela.", c: C`<p>Olá, mundo!</p>` },
+    lista: { nota: "HTML não guarda dados em listas, mas tem tags para <b>mostrar</b> listas na página.", c: C`
+<ul>
+  <li>maçã</li>
+  <li>banana</li>
+  <li>uva</li>
+</ul>` },
+  },
+  resumo: "Não é uma linguagem de programação: é a linguagem que monta a estrutura de uma página (títulos, textos, imagens, links). É o primeiro passo para criar sites.",
+  usos: ["Estrutura de sites", "E-mails formatados", "Base para qualquer página web"],
+  fortes: ["Muito fácil, resultado visível na hora", "Só precisa de um editor de texto e um navegador"],
+  cuidados: ["Sozinho não deixa a página bonita (isso é o CSS) nem interativa (isso é o JavaScript)"],
+  comandos: [
+    { t: "Estrutura básica de uma página", d: "Todo arquivo HTML começa assim. O conteúdo visível fica dentro de <body>.", c: C`
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Minha página</title>
+</head>
+<body>
+  <h1>Olá, mundo!</h1>
+</body>
+</html>` },
+    { t: "Comentário", d: "Não aparece na página.", c: C`<!-- Isto é um comentário -->` },
+    { t: "Títulos", d: "Vão de <h1> (o mais importante) até <h6>.", c: C`
+<h1>Título principal</h1>
+<h2>Subtítulo</h2>
+<h3>Seção menor</h3>` },
+    { t: "Parágrafo e destaques", d: "<p> para parágrafos; <strong> deixa em negrito e <em> em itálico.", c: C`<p>Texto com <strong>negrito</strong> e <em>itálico</em>.</p>` },
+    { t: "Link", d: "A tag <a> leva para outra página. O endereço vai em href.", c: C`<a href="https://www.wikipedia.org">Abrir a Wikipédia</a>` },
+    { t: "Imagem", d: "src é o arquivo da imagem; alt descreve a imagem para quem não consegue vê-la.", c: C`<img src="gato.jpg" alt="Gato dormindo no sofá">` },
+    { t: "Listas", d: "<ul> cria lista com marcadores; <ol> cria lista numerada. Cada item é um <li>.", c: C`
+<ul>
+  <li>Arroz</li>
+  <li>Feijão</li>
+</ul>
+
+<ol>
+  <li>Primeiro passo</li>
+  <li>Segundo passo</li>
+</ol>` },
+    { t: "Caixas: div e span", d: "<div> agrupa blocos; <span> marca um trecho dentro de um texto. Muito usados com CSS.", c: C`
+<div class="cartao">
+  <p>Preço: <span class="preco">R$ 10</span></p>
+</div>` },
+    { t: "Formulário", d: "Campos para o usuário digitar e um botão para enviar.", c: C`
+<form>
+  <label for="nome">Nome</label>
+  <input id="nome" type="text" placeholder="Seu nome">
+
+  <label for="email">E-mail</label>
+  <input id="email" type="email">
+
+  <button type="submit">Enviar</button>
+</form>` },
+    { t: "Tabela", d: "<tr> é uma linha, <th> é um cabeçalho e <td> é uma célula.", c: C`
+<table>
+  <tr><th>Nome</th><th>Idade</th></tr>
+  <tr><td>Ana</td><td>20</td></tr>
+</table>` },
+  ],
+},
+
+css: {
+  nome: "CSS", pron: "/cê-ésse-ésse/", ano: 1996, criador: "Håkon Wium Lie", cat: "Web", cor: "#663399", hl: "css", ext: ".css",
+  tipo: "Linguagem de estilo", tipagem: "Não se aplica", dif: 2, marcacao: true,
+  semConceito: "CSS só cuida da aparência da página e não tem esse recurso. Para isso, usa-se JavaScript.",
+  conceitos: {
+    comentario: C`/* Isto é um comentário */`,
+    imprimir: { nota: "CSS não escreve mensagens; ele muda a aparência do que o HTML mostra. Um truque possível é a propriedade <b>content</b>.", c: C`
+h1::before {
+  content: "Olá, mundo! ";
+}` },
+    variavel: { nota: "CSS tem <b>variáveis</b> (propriedades personalizadas), que começam com dois hífens.", c: C`
+:root {
+  --cor-principal: #1E57CF;
+  --espaco: 16px;
+}
+
+.botao {
+  background: var(--cor-principal);
+  padding: var(--espaco);
+}` },
+    condicao: { nota: "O mais parecido com uma condição é o <b>@media</b>: “se a tela for pequena, aplique este estilo”.", c: C`
+@media (max-width: 600px) {
+  h1 { font-size: 20px; }
+}` },
+    funcao: { nota: "CSS tem funções prontas, como <b>calc()</b>, <b>var()</b> e <b>rgb()</b>, mas não dá para criar funções suas.", c: C`
+.caixa {
+  width: calc(100% - 40px);
+  color: rgb(30, 87, 207);
+}` },
+  },
+  resumo: "Define a aparência das páginas: cores, fontes, tamanhos, espaçamentos e posição dos elementos. Trabalha junto com o HTML.",
+  usos: ["Visual de sites", "Layouts que se adaptam ao celular", "Animações simples"],
+  fortes: ["Resultado visual imediato", "Funciona em todos os navegadores"],
+  cuidados: ["Centralizar e alinhar coisas exige prática (aprenda Flexbox e Grid)"],
+  comandos: [
+    { t: "Ligar o CSS ao HTML", d: "Coloque esta linha dentro do <head> do HTML.", hl: "xml", c: C`<link rel="stylesheet" href="estilo.css">` },
+    { t: "Seletores: tag, classe e id", d: "Dizem em quais elementos o estilo vai ser aplicado. Classe usa ponto; id usa #.", c: C`
+p { color: gray; }             /* todos os <p> */
+.destaque { color: red; }      /* class="destaque" */
+#topo { background: black; }   /* id="topo" */` },
+    { t: "Comentário", d: "", c: C`/* Isto é um comentário */` },
+    { t: "Cores e texto", d: "Cores podem ser nomes, códigos hexadecimais (#) ou rgb().", c: C`
+h1 {
+  color: #1E57CF;
+  font-family: Arial, sans-serif;
+  font-size: 32px;
+  font-weight: bold;
+  text-align: center;
+}` },
+    { t: "Espaçamento (box model)", d: "padding é o espaço de dentro; margin é o espaço de fora; border é a borda entre eles.", c: C`
+.caixa {
+  padding: 16px;
+  margin: 20px;
+  border: 2px solid black;
+  border-radius: 8px;   /* cantos arredondados */
+}` },
+    { t: "Flexbox (alinhar em linha)", d: "Coloca os itens lado a lado e facilita centralizar.", c: C`
+.menu {
+  display: flex;
+  justify-content: center;   /* alinha na horizontal */
+  align-items: center;       /* alinha na vertical */
+  gap: 12px;                 /* espaço entre os itens */
+}` },
+    { t: "Grid (layout em grade)", d: "Divide a área em colunas e linhas.", c: C`
+.galeria {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);  /* 3 colunas iguais */
+  gap: 10px;
+}` },
+    { t: "Passar o mouse (:hover)", d: "Muda o estilo quando o mouse passa por cima.", c: C`
+button:hover {
+  background: navy;
+  cursor: pointer;
+}` },
+    { t: "Responsivo (@media)", d: "Aplica regras só em telas pequenas, como celulares.", c: C`
+@media (max-width: 600px) {
+  .galeria {
+    grid-template-columns: 1fr;   /* 1 coluna no celular */
+  }
+}` },
+    { t: "Variáveis CSS", d: "Guardam um valor para reutilizar em vários lugares.", c: C`
+:root {
+  --cor-principal: #1E57CF;
+}
+
+a { color: var(--cor-principal); }` },
+  ],
+},
+
+sql: {
+  nome: "SQL", pron: "/ésse-quê-éle/ ou /síquel/", ano: 1974, criador: "Donald Chamberlin e Raymond Boyce (IBM)", cat: "Dados", cor: "#E38C00", hl: "sql", ext: ".sql",
+  tipo: "Linguagem de consulta", tipagem: "Estática (nas tabelas)", dif: 2, marcacao: true,
+  semConceito: "SQL foi feito para consultar dados em tabelas e não tem esse recurso no uso comum. Alguns bancos permitem isso dentro de procedimentos (procedures), com escrita diferente em cada um.",
+  conceitos: {
+    comentario: C`
+-- Comentário de uma linha
+/* Comentário de várias linhas */`,
+    imprimir: C`SELECT 'Olá, mundo!';`,
+    variavel: { nota: "A forma muda de um banco para outro. Este exemplo é do <b>MySQL</b>.", c: C`
+SET @nome = 'Ana';
+SELECT @nome;` },
+    condicao: { nota: "Em SQL, a condição dentro de uma consulta se escreve com <b>CASE WHEN</b>.", c: C`
+SELECT nome,
+  CASE
+    WHEN idade >= 18 THEN 'Maior de idade'
+    WHEN idade >= 12 THEN 'Adolescente'
+    ELSE 'Criança'
+  END AS faixa
+FROM alunos;` },
+    funcao: { nota: "SQL tem muitas funções prontas. Criar funções próprias é possível, mas cada banco tem sua escrita.", c: C`
+SELECT UPPER(nome), LENGTH(nome), ROUND(nota, 1)
+FROM alunos;` },
+    lista: { nota: "Em SQL, uma coleção de dados é guardada em uma <b>tabela</b>: cada linha é um item.", c: C`
+CREATE TABLE frutas (nome VARCHAR(50));
+INSERT INTO frutas VALUES ('maçã'), ('banana'), ('uva');
+SELECT * FROM frutas;` },
+  },
+  resumo: "Serve para conversar com bancos de dados: guardar, buscar, alterar e apagar informações organizadas em tabelas. Usada em quase todo sistema.",
+  usos: ["Bancos de dados (MySQL, PostgreSQL, SQLite, SQL Server)", "Relatórios e análise de dados", "Back-end de sistemas"],
+  fortes: ["Poucos comandos fazem muita coisa", "Muito pedido em vagas de emprego", "Parece frases em inglês"],
+  cuidados: ["Cada banco tem pequenas diferenças", "UPDATE e DELETE sem WHERE alteram a tabela inteira"],
+  comandos: [
+    { t: "Comentário", d: "", c: C`
+-- Comentário de uma linha
+/* Comentário de várias linhas */` },
+    { t: "CREATE TABLE: criar tabela", d: "Define as colunas e o tipo de cada uma.", c: C`
+CREATE TABLE alunos (
+  id INT PRIMARY KEY,
+  nome VARCHAR(100),
+  idade INT,
+  cidade VARCHAR(50)
+);` },
+    { t: "INSERT: adicionar dados", d: "Insere uma nova linha na tabela.", c: C`
+INSERT INTO alunos (id, nome, idade, cidade)
+VALUES (1, 'Ana', 20, 'Recife');` },
+    { t: "SELECT: buscar dados", d: "O * significa “todas as colunas”.", c: C`
+SELECT * FROM alunos;
+
+SELECT nome, idade FROM alunos;` },
+    { t: "WHERE: filtrar", d: "Traz só as linhas que atendem à condição.", c: C`
+SELECT * FROM alunos
+WHERE idade >= 18 AND cidade = 'Recife';
+
+SELECT * FROM alunos
+WHERE nome LIKE 'A%';   -- nomes que começam com A` },
+    { t: "ORDER BY e LIMIT: ordenar", d: "ASC é crescente; DESC é decrescente.", c: C`
+SELECT * FROM alunos
+ORDER BY idade DESC
+LIMIT 5;` },
+    { t: "UPDATE: alterar dados", d: "Sempre use WHERE, senão todas as linhas mudam!", c: C`
+UPDATE alunos
+SET cidade = 'Olinda'
+WHERE id = 1;` },
+    { t: "DELETE: apagar dados", d: "Sempre use WHERE, senão a tabela inteira é apagada!", c: C`
+DELETE FROM alunos
+WHERE id = 1;` },
+    { t: "COUNT, AVG e GROUP BY: resumir", d: "Contam, calculam médias e agrupam resultados.", c: C`
+SELECT cidade, COUNT(*) AS total, AVG(idade) AS media_idade
+FROM alunos
+GROUP BY cidade;` },
+    { t: "JOIN: juntar tabelas", d: "Combina informações de duas tabelas relacionadas.", c: C`
+SELECT alunos.nome, cursos.titulo
+FROM alunos
+JOIN cursos ON alunos.curso_id = cursos.id;` },
+  ],
+},
+
+java: {
+  nome: "Java", pron: "/djá-va/", ano: 1995, criador: "James Gosling (Sun Microsystems)", cat: "Uso geral", cor: "#B07219", hl: "java", ext: ".java",
+  tipo: "Compilada para bytecode (roda na JVM)", tipagem: "Estática", dif: 3,
+  resumo: "Linguagem robusta e muito usada em empresas, bancos e no Android. O lema é “escreva uma vez, rode em qualquer lugar”.",
+  usos: ["Sistemas de empresas e bancos", "Apps Android", "Back-end (Spring)", "Minecraft (edição Java)"],
+  fortes: ["Muitas vagas de emprego", "Organizada e segura", "Ensina bem orientação a objetos"],
+  cuidados: ["Escrita mais longa (verbosa)", "Tudo precisa estar dentro de uma classe"],
+  conceitos: {
+    comentario: C`
+// Comentário de uma linha
+
+/* Comentário
+   de várias linhas */
+
+/** Comentário de documentação (Javadoc) */`,
+    imprimir: C`
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("Olá, mundo!");
+    }
+}`,
+    variavel: C`
+String nome = "Ana";
+int idade = 20;
+double altura = 1.65;
+boolean ativo = true;
+char letra = 'A';
+var cidade = "Recife";   // tipo deduzido (Java 10+)`,
+    condicao: C`
+int idade = 18;
+
+if (idade >= 18) {
+    System.out.println("Maior de idade");
+} else if (idade >= 12) {
+    System.out.println("Adolescente");
+} else {
+    System.out.println("Criança");
+}`,
+    for: C`
+for (int i = 0; i < 5; i++) {
+    System.out.println(i);
+}`,
+    while: C`
+int contador = 0;
+while (contador < 3) {
+    System.out.println(contador);
+    contador++;
+}`,
+    funcao: { nota: "Em Java, funções se chamam <b>métodos</b> e ficam dentro de uma classe.", c: C`
+static int somar(int a, int b) {
+    return a + b;
+}
+
+// uso: somar(2, 3) → 5` },
+    lista: C`
+import java.util.ArrayList;
+
+ArrayList<String> frutas = new ArrayList<>();
+frutas.add("maçã");
+frutas.add("banana");
+System.out.println(frutas.get(0));   // maçã
+System.out.println(frutas.size());   // 2
+
+int[] numeros = {10, 20, 30};        // array de tamanho fixo`,
+    mapa: C`
+import java.util.HashMap;
+
+HashMap<String, Integer> idades = new HashMap<>();
+idades.put("Ana", 20);
+System.out.println(idades.get("Ana"));   // 20`,
+    classe: C`
+public class Cachorro {
+    private String nome;
+
+    public Cachorro(String nome) {
+        this.nome = nome;
+    }
+
+    public void latir() {
+        System.out.println(nome + " diz: Au au!");
+    }
+}
+
+Cachorro rex = new Cachorro("Rex");
+rex.latir();`,
+  },
+  extras: [
+    { t: "Ler o que o usuário digita (Scanner)", d: "", c: C`
+import java.util.Scanner;
+
+Scanner teclado = new Scanner(System.in);
+System.out.print("Seu nome: ");
+String nome = teclado.nextLine();
+System.out.println("Olá, " + nome);` },
+    { t: "for-each (percorrer lista)", d: "", c: C`
+for (String fruta : frutas) {
+    System.out.println(fruta);
+}` },
+    { t: "Tratar erros (try / catch)", d: "", c: C`
+try {
+    int resultado = 10 / 0;
+} catch (ArithmeticException e) {
+    System.out.println("Não dá para dividir por zero!");
+}` },
+    { t: "Compilar e executar", d: "Comandos no terminal.", hl: "bash", c: C`
+javac Main.java
+java Main` },
+  ],
+},
+
+c: {
+  nome: "C", pron: "/cê/", ano: 1972, criador: "Dennis Ritchie", cat: "Sistemas", cor: "#555555", hl: "c", ext: ".c",
+  tipo: "Compilada", tipagem: "Estática", dif: 4,
+  resumo: "Uma das linguagens mais antigas ainda em uso. É rápida e trabalha “perto” do hardware. Sistemas operacionais como Linux e Windows têm muito código em C.",
+  usos: ["Sistemas operacionais", "Microcontroladores e Arduino", "Programas que precisam de muita velocidade", "Faculdades de computação"],
+  fortes: ["Muito rápida", "Ensina como o computador funciona por dentro", "Base de C++, C#, Java e outras"],
+  cuidados: ["Você mesmo cuida da memória (ponteiros)", "Erros podem travar o programa sem aviso claro"],
+  conceitos: {
+    comentario: C`
+// Comentário de uma linha
+
+/* Comentário
+   de várias linhas */`,
+    imprimir: C`
+#include <stdio.h>
+
+int main() {
+    printf("Olá, mundo!\n");   // \n pula linha
+    return 0;
+}`,
+    variavel: C`
+char nome[] = "Ana";   // texto é um array de caracteres
+int idade = 20;
+float altura = 1.65;
+char letra = 'A';
+// para usar bool: #include <stdbool.h>`,
+    condicao: C`
+int idade = 18;
+
+if (idade >= 18) {
+    printf("Maior de idade\n");
+} else if (idade >= 12) {
+    printf("Adolescente\n");
+} else {
+    printf("Criança\n");
+}`,
+    for: C`
+for (int i = 0; i < 5; i++) {
+    printf("%d\n", i);   // %d mostra um número inteiro
+}`,
+    while: C`
+int contador = 0;
+while (contador < 3) {
+    printf("%d\n", contador);
+    contador++;
+}`,
+    funcao: C`
+int somar(int a, int b) {
+    return a + b;
+}
+
+int main() {
+    printf("%d\n", somar(2, 3));   // 5
+    return 0;
+}`,
+    lista: { nota: "Arrays em C têm <b>tamanho fixo</b>, definido na criação.", c: C`
+int numeros[5] = {10, 20, 30, 40, 50};
+printf("%d\n", numeros[0]);   // 10
+numeros[1] = 99;              // altera a posição 1` },
+    mapa: { nota: "C não tem dicionário pronto. Para isso, usa-se <b>struct</b>, arrays ou bibliotecas externas." },
+    classe: { nota: "C não tem classes. O mais próximo é a <b>struct</b>, que agrupa dados relacionados.", c: C`
+struct Cachorro {
+    char nome[20];
+    int idade;
+};
+
+struct Cachorro rex = {"Rex", 3};
+printf("%s tem %d anos\n", rex.nome, rex.idade);` },
+  },
+  extras: [
+    { t: "Ler do teclado (scanf)", d: "O & passa o endereço da variável onde o valor será guardado.", c: C`
+int idade;
+printf("Sua idade: ");
+scanf("%d", &idade);` },
+    { t: "Códigos do printf", d: "", c: C`
+printf("%d", 10);       // inteiro
+printf("%.2f", 3.14);   // decimal com 2 casas
+printf("%s", "texto");  // texto
+printf("%c", 'A');      // um caractere` },
+    { t: "Ponteiros", d: "Um ponteiro guarda o endereço de memória de outra variável.", c: C`
+int x = 10;
+int *p = &x;          // p aponta para x
+printf("%d\n", *p);   // 10 (valor para onde p aponta)` },
+    { t: "Compilar e executar (gcc)", d: "Comandos no terminal.", hl: "bash", c: C`
+gcc programa.c -o programa
+./programa` },
+  ],
+},
+
+cpp: {
+  nome: "C++", pron: "/cê-mais-mais/", ano: 1985, criador: "Bjarne Stroustrup", cat: "Sistemas", cor: "#F34B7D", hl: "cpp", ext: ".cpp",
+  tipo: "Compilada", tipagem: "Estática", dif: 5,
+  resumo: "É o C com classes e muitos recursos a mais. Muito rápida e poderosa, é usada em jogos grandes, navegadores e programas pesados.",
+  usos: ["Jogos (Unreal Engine)", "Navegadores e programas pesados", "Maratonas de programação", "Sistemas embarcados"],
+  fortes: ["Desempenho altíssimo", "Controle total do computador", "Biblioteca padrão rica (STL)"],
+  cuidados: ["Uma das linguagens mais difíceis", "Muitos jeitos de fazer a mesma coisa"],
+  conceitos: {
+    comentario: C`
+// Comentário de uma linha
+/* Comentário de várias linhas */`,
+    imprimir: C`
+#include <iostream>
+
+int main() {
+    std::cout << "Olá, mundo!" << std::endl;
+    return 0;
+}`,
+    variavel: C`
+std::string nome = "Ana";
+int idade = 20;
+double altura = 1.65;
+bool ativo = true;
+auto cidade = "Recife";   // tipo deduzido`,
+    condicao: C`
+int idade = 18;
+
+if (idade >= 18) {
+    std::cout << "Maior de idade";
+} else if (idade >= 12) {
+    std::cout << "Adolescente";
+} else {
+    std::cout << "Criança";
+}`,
+    for: C`
+for (int i = 0; i < 5; i++) {
+    std::cout << i << std::endl;
+}`,
+    while: C`
+int contador = 0;
+while (contador < 3) {
+    std::cout << contador << std::endl;
+    contador++;
+}`,
+    funcao: C`
+int somar(int a, int b) {
+    return a + b;
+}
+
+// uso: somar(2, 3) → 5`,
+    lista: C`
+#include <vector>
+
+std::vector<std::string> frutas = {"maçã", "banana"};
+frutas.push_back("uva");                    // adiciona no fim
+std::cout << frutas[0] << std::endl;        // maçã
+std::cout << frutas.size() << std::endl;    // 3`,
+    mapa: C`
+#include <map>
+
+std::map<std::string, int> idades;
+idades["Ana"] = 20;
+std::cout << idades["Ana"] << std::endl;    // 20`,
+    classe: C`
+class Cachorro {
+public:
+    std::string nome;
+
+    Cachorro(std::string n) : nome(n) {}
+
+    void latir() {
+        std::cout << nome << " diz: Au au!" << std::endl;
+    }
+};
+
+Cachorro rex("Rex");
+rex.latir();`,
+  },
+  extras: [
+    { t: "using namespace std", d: "Evita escrever std:: toda hora. Comum em exercícios, mas evitado em projetos grandes.", c: C`
+#include <iostream>
+using namespace std;
+
+int main() {
+    cout << "Sem std:: na frente" << endl;
+}` },
+    { t: "Ler do teclado (cin)", d: "", c: C`
+int idade;
+std::cout << "Sua idade: ";
+std::cin >> idade;` },
+    { t: "for de intervalo (range-based)", d: "Percorre todos os itens de uma lista.", c: C`
+for (const auto& fruta : frutas) {
+    std::cout << fruta << std::endl;
+}` },
+    { t: "Compilar e executar (g++)", d: "Comandos no terminal.", hl: "bash", c: C`
+g++ programa.cpp -o programa
+./programa` },
+  ],
+},
+
+csharp: {
+  nome: "C#", pron: "/cí-xarp/", ano: 2000, criador: "Anders Hejlsberg (Microsoft)", cat: "Uso geral", cor: "#178600", hl: "csharp", ext: ".cs",
+  tipo: "Compilada (.NET)", tipagem: "Estática", dif: 3,
+  resumo: "Linguagem moderna da Microsoft, parecida com Java. É a linguagem do Unity, um dos motores de jogos mais usados do mundo.",
+  usos: ["Jogos (Unity)", "Sistemas de empresas", "Programas para Windows", "Back-end web (ASP.NET)"],
+  fortes: ["Organizada e moderna", "Ótimas ferramentas (Visual Studio)", "Porta de entrada para criar jogos"],
+  cuidados: ["Ecossistema grande pode assustar no começo"],
+  conceitos: {
+    comentario: C`
+// Comentário de uma linha
+/* Comentário de várias linhas */
+/// Comentário de documentação`,
+    imprimir: C`Console.WriteLine("Olá, mundo!");`,
+    variavel: C`
+string nome = "Ana";
+int idade = 20;
+double altura = 1.65;
+bool ativo = true;
+var cidade = "Recife";   // tipo deduzido`,
+    condicao: C`
+int idade = 18;
+
+if (idade >= 18)
+{
+    Console.WriteLine("Maior de idade");
+}
+else if (idade >= 12)
+{
+    Console.WriteLine("Adolescente");
+}
+else
+{
+    Console.WriteLine("Criança");
+}`,
+    for: C`
+for (int i = 0; i < 5; i++)
+{
+    Console.WriteLine(i);
+}`,
+    while: C`
+int contador = 0;
+while (contador < 3)
+{
+    Console.WriteLine(contador);
+    contador++;
+}`,
+    funcao: C`
+static int Somar(int a, int b)
+{
+    return a + b;
+}
+
+Console.WriteLine(Somar(2, 3));   // 5`,
+    lista: C`
+var frutas = new List<string> { "maçã", "banana" };
+frutas.Add("uva");
+Console.WriteLine(frutas[0]);       // maçã
+Console.WriteLine(frutas.Count);    // 3`,
+    mapa: C`
+var idades = new Dictionary<string, int>();
+idades["Ana"] = 20;
+Console.WriteLine(idades["Ana"]);   // 20`,
+    classe: C`
+class Cachorro
+{
+    public string Nome { get; set; }
+
+    public Cachorro(string nome)
+    {
+        Nome = nome;
+    }
+
+    public void Latir()
+    {
+        Console.WriteLine($"{Nome} diz: Au au!");
+    }
+}
+
+var rex = new Cachorro("Rex");
+rex.Latir();`,
+  },
+  extras: [
+    { t: "Interpolação de texto", d: "Coloque $ antes das aspas e as variáveis entre chaves.", c: C`Console.WriteLine($"{nome} tem {idade} anos");` },
+    { t: "Ler o que o usuário digita", d: "", c: C`
+Console.Write("Seu nome: ");
+string nome = Console.ReadLine();` },
+    { t: "foreach", d: "", c: C`
+foreach (var fruta in frutas)
+{
+    Console.WriteLine(fruta);
+}` },
+    { t: "LINQ (consultas em listas)", d: "Filtra e transforma listas de forma curta.", c: C`
+var numeros = new List<int> { 1, 2, 3, 4 };
+var pares = numeros.Where(n => n % 2 == 0).ToList();   // [2, 4]` },
+    { t: "Criar e rodar um projeto", d: "Comandos no terminal.", hl: "bash", c: C`
+dotnet new console -o MeuApp
+cd MeuApp
+dotnet run` },
+  ],
+},
+
+php: {
+  nome: "PHP", pron: "/pê-agá-pê/", ano: 1995, criador: "Rasmus Lerdorf", cat: "Web", cor: "#4F5D95", hl: "php", ext: ".php",
+  tipo: "Interpretada (no servidor)", tipagem: "Dinâmica", dif: 2,
+  resumo: "Linguagem que roda no servidor e gera páginas web. O WordPress, que está por trás de boa parte dos sites do mundo, é feito em PHP.",
+  usos: ["Sites e blogs (WordPress)", "Lojas virtuais", "Back-end web (Laravel)", "Sistemas web"],
+  fortes: ["Hospedagem barata e fácil", "Mistura bem com HTML", "Muito trabalho disponível com WordPress"],
+  cuidados: ["Toda variável começa com $", "Código antigo na internet pode ensinar práticas ruins"],
+  conceitos: {
+    comentario: C`
+<?php
+// Comentário de uma linha
+# Também é comentário
+/* Comentário de várias linhas */`,
+    imprimir: C`
+<?php
+echo "Olá, mundo!";`,
+    variavel: C`
+$nome = "Ana";
+$idade = 20;
+$altura = 1.65;
+$ativo = true;`,
+    condicao: C`
+$idade = 18;
+
+if ($idade >= 18) {
+    echo "Maior de idade";
+} elseif ($idade >= 12) {
+    echo "Adolescente";
+} else {
+    echo "Criança";
+}`,
+    for: C`
+for ($i = 0; $i < 5; $i++) {
+    echo $i;
+}`,
+    while: C`
+$contador = 0;
+while ($contador < 3) {
+    echo $contador;
+    $contador++;
+}`,
+    funcao: C`
+function somar($a, $b) {
+    return $a + $b;
+}
+
+echo somar(2, 3);   // 5`,
+    lista: C`
+$frutas = ["maçã", "banana"];
+$frutas[] = "uva";         // adiciona no fim
+echo $frutas[0];           // maçã
+echo count($frutas);       // 3`,
+    mapa: C`
+$pessoa = ["nome" => "Ana", "idade" => 20];
+echo $pessoa["nome"];      // Ana
+$pessoa["cidade"] = "Recife";`,
+    classe: C`
+class Cachorro {
+    public $nome;
+
+    public function __construct($nome) {
+        $this->nome = $nome;
+    }
+
+    public function latir() {
+        echo "{$this->nome} diz: Au au!";
+    }
+}
+
+$rex = new Cachorro("Rex");
+$rex->latir();`,
+  },
+  extras: [
+    { t: "Juntar textos (concatenar)", d: "Em PHP, o ponto junta textos.", c: C`echo "Olá, " . $nome . "!";` },
+    { t: "foreach", d: "", c: C`
+foreach ($frutas as $fruta) {
+    echo $fruta;
+}
+
+foreach ($pessoa as $chave => $valor) {
+    echo "$chave: $valor";
+}` },
+    { t: "Receber dados de um formulário", d: "$_POST guarda o que foi enviado por um <form method=\"post\">.", c: C`
+$nome = $_POST["nome"];
+echo "Recebido: " . htmlspecialchars($nome);` },
+    { t: "PHP dentro do HTML", d: "<?= ?> é um atalho para echo.", c: C`
+<h1>Olá, <?= $nome ?>!</h1>` },
+  ],
+},
+
+ruby: {
+  nome: "Ruby", pron: "/rú-bi/", ano: 1995, criador: "Yukihiro “Matz” Matsumoto", cat: "Web", cor: "#701516", hl: "ruby", ext: ".rb",
+  tipo: "Interpretada", tipagem: "Dinâmica", dif: 2,
+  resumo: "Linguagem feita para ser agradável de escrever, com código que parece frase. Ficou famosa pelo framework Ruby on Rails, usado para criar sites rapidamente.",
+  usos: ["Sites e startups (Ruby on Rails)", "Automação e scripts", "Protótipos rápidos"],
+  fortes: ["Código muito legível", "Rails acelera muito a criação de sites"],
+  cuidados: ["Menos vagas que Python ou JavaScript", "Mais lenta que linguagens compiladas"],
+  conceitos: {
+    comentario: C`
+# Comentário de uma linha
+
+=begin
+Comentário de
+várias linhas
+=end`,
+    imprimir: C`puts "Olá, mundo!"`,
+    variavel: C`
+nome = "Ana"
+idade = 20
+altura = 1.65
+ativo = true`,
+    condicao: C`
+idade = 18
+
+if idade >= 18
+  puts "Maior de idade"
+elsif idade >= 12
+  puts "Adolescente"
+else
+  puts "Criança"
+end`,
+    for: C`
+5.times do |i|
+  puts i          # 0 a 4
+end
+
+for i in 0..4
+  puts i
+end`,
+    while: C`
+contador = 0
+while contador < 3
+  puts contador
+  contador += 1
+end`,
+    funcao: C`
+def somar(a, b)
+  a + b   # a última linha é o valor devolvido
+end
+
+puts somar(2, 3)   # 5`,
+    lista: C`
+frutas = ["maçã", "banana"]
+frutas << "uva"       # adiciona no fim
+puts frutas[0]        # maçã
+puts frutas.length    # 3`,
+    mapa: C`
+pessoa = { nome: "Ana", idade: 20 }
+puts pessoa[:nome]    # Ana
+pessoa[:cidade] = "Recife"`,
+    classe: C`
+class Cachorro
+  def initialize(nome)
+    @nome = nome
+  end
+
+  def latir
+    puts "#{@nome} diz: Au au!"
+  end
+end
+
+rex = Cachorro.new("Rex")
+rex.latir`,
+  },
+  extras: [
+    { t: "Interpolação de texto", d: "Use #{ } dentro de aspas duplas.", c: C`puts "#{nome} tem #{idade} anos"` },
+    { t: "each (percorrer lista)", d: "", c: C`
+frutas.each do |fruta|
+  puts fruta
+end` },
+    { t: "Ler o que o usuário digita", d: "gets lê a linha; chomp tira o Enter do final.", c: C`
+print "Seu nome: "
+nome = gets.chomp` },
+    { t: "Instalar bibliotecas (gems)", d: "Comando no terminal.", hl: "bash", c: C`gem install rails` },
+  ],
+},
+
+go: {
+  nome: "Go", pron: "/gôu/", ano: 2009, criador: "Robert Griesemer, Rob Pike e Ken Thompson (Google)", cat: "Sistemas", cor: "#00ADD8", hl: "go", ext: ".go",
+  tipo: "Compilada", tipagem: "Estática", dif: 3,
+  resumo: "Linguagem criada no Google para ser simples e rápida. Muito usada em servidores e em ferramentas de nuvem como Docker e Kubernetes.",
+  usos: ["Servidores e APIs", "Ferramentas de nuvem (Docker, Kubernetes)", "Programas de linha de comando"],
+  fortes: ["Poucas palavras-chave, fácil de aprender", "Muito rápida", "Ótima para fazer várias coisas ao mesmo tempo"],
+  cuidados: ["Tratamento de erros repetitivo (if err != nil)", "Não tem classes nem while"],
+  conceitos: {
+    comentario: C`
+// Comentário de uma linha
+/* Comentário de várias linhas */`,
+    imprimir: C`
+package main
+
+import "fmt"
+
+func main() {
+    fmt.Println("Olá, mundo!")
+}`,
+    variavel: C`
+var nome string = "Ana"
+idade := 20          // forma curta: o tipo é deduzido
+altura := 1.65
+ativo := true`,
+    condicao: C`
+idade := 18
+
+if idade >= 18 {
+    fmt.Println("Maior de idade")
+} else if idade >= 12 {
+    fmt.Println("Adolescente")
+} else {
+    fmt.Println("Criança")
+}`,
+    for: C`
+for i := 0; i < 5; i++ {
+    fmt.Println(i)
+}`,
+    while: { nota: "Go não tem a palavra <b>while</b>: usa-se <b>for</b> só com a condição.", c: C`
+contador := 0
+for contador < 3 {
+    fmt.Println(contador)
+    contador++
+}` },
+    funcao: C`
+func somar(a int, b int) int {
+    return a + b
+}
+
+fmt.Println(somar(2, 3))   // 5`,
+    lista: C`
+frutas := []string{"maçã", "banana"}
+frutas = append(frutas, "uva")   // adiciona no fim
+fmt.Println(frutas[0])           // maçã
+fmt.Println(len(frutas))         // 3`,
+    mapa: C`
+idades := map[string]int{"Ana": 20}
+idades["Bruno"] = 25
+fmt.Println(idades["Ana"])   // 20`,
+    classe: { nota: "Go não tem classes. Usa-se <b>struct</b> com métodos.", c: C`
+type Cachorro struct {
+    Nome string
+}
+
+func (c Cachorro) Latir() {
+    fmt.Println(c.Nome + " diz: Au au!")
+}
+
+rex := Cachorro{Nome: "Rex"}
+rex.Latir()` },
+  },
+  extras: [
+    { t: "Tratar erros", d: "Funções costumam devolver o resultado e um erro.", c: C`
+numero, err := strconv.Atoi("42")
+if err != nil {
+    fmt.Println("Erro:", err)
+    return
+}
+fmt.Println(numero)` },
+    { t: "range (percorrer lista)", d: "", c: C`
+for indice, fruta := range frutas {
+    fmt.Println(indice, fruta)
+}` },
+    { t: "Goroutine (tarefa em paralelo)", d: "A palavra go roda uma função ao mesmo tempo que o resto do programa.", c: C`go enviarEmail("ana@exemplo.com")` },
+    { t: "Executar um programa", d: "Comando no terminal.", hl: "bash", c: C`go run main.go` },
+  ],
+},
+
+rust: {
+  nome: "Rust", pron: "/râst/", ano: 2015, criador: "Graydon Hoare (Mozilla)", cat: "Sistemas", cor: "#DEA584", hl: "rust", ext: ".rs",
+  tipo: "Compilada", tipagem: "Estática", dif: 5,
+  resumo: "Tão rápida quanto C e C++, mas com regras que impedem muitos erros de memória antes mesmo de o programa rodar. Muito admirada pelos programadores.",
+  usos: ["Sistemas e ferramentas rápidas", "Partes do Windows, Linux e navegadores", "WebAssembly", "Blockchain"],
+  fortes: ["Segura e muito rápida", "Mensagens de erro muito didáticas", "Ferramenta cargo facilita tudo"],
+  cuidados: ["Conceitos novos e difíceis (posse, empréstimo)", "Curva de aprendizado alta"],
+  conceitos: {
+    comentario: C`
+// Comentário de uma linha
+/* Comentário de várias linhas */
+/// Comentário de documentação`,
+    imprimir: C`
+fn main() {
+    println!("Olá, mundo!");
+}`,
+    variavel: C`
+let nome = "Ana";        // imutável: não pode mudar
+let mut idade = 20;      // mut: pode mudar
+idade += 1;
+let altura: f64 = 1.65;  // tipo escrito explicitamente`,
+    condicao: C`
+let idade = 18;
+
+if idade >= 18 {
+    println!("Maior de idade");
+} else if idade >= 12 {
+    println!("Adolescente");
+} else {
+    println!("Criança");
+}`,
+    for: C`
+for i in 0..5 {          // 0 até 4
+    println!("{}", i);
+}`,
+    while: C`
+let mut contador = 0;
+while contador < 3 {
+    println!("{}", contador);
+    contador += 1;
+}`,
+    funcao: C`
+fn somar(a: i32, b: i32) -> i32 {
+    a + b   // sem ponto e vírgula = valor devolvido
+}
+
+println!("{}", somar(2, 3));   // 5`,
+    lista: C`
+let mut frutas = vec!["maçã", "banana"];
+frutas.push("uva");
+println!("{}", frutas[0]);      // maçã
+println!("{}", frutas.len());   // 3`,
+    mapa: C`
+use std::collections::HashMap;
+
+let mut idades = HashMap::new();
+idades.insert("Ana", 20);
+println!("{:?}", idades.get("Ana"));   // Some(20)`,
+    classe: { nota: "Rust não tem classes. Usa-se <b>struct</b> para os dados e <b>impl</b> para os métodos.", c: C`
+struct Cachorro {
+    nome: String,
+}
+
+impl Cachorro {
+    fn latir(&self) {
+        println!("{} diz: Au au!", self.nome);
+    }
+}
+
+let rex = Cachorro { nome: String::from("Rex") };
+rex.latir();` },
+  },
+  extras: [
+    { t: "match", d: "Compara um valor com vários casos, como um if mais poderoso.", c: C`
+let nota = 8;
+match nota {
+    10 => println!("Perfeito!"),
+    7..=9 => println!("Aprovado"),
+    _ => println!("Estude mais"),   // _ = qualquer outro caso
+}` },
+    { t: "Option (valor que pode não existir)", d: "Rust não tem null. Usa Some(valor) ou None.", c: C`
+match idades.get("Ana") {
+    Some(idade) => println!("Idade: {}", idade),
+    None => println!("Não encontrado"),
+}` },
+    { t: "Criar e rodar um projeto (cargo)", d: "Comandos no terminal.", hl: "bash", c: C`
+cargo new meu_projeto
+cd meu_projeto
+cargo run` },
+  ],
+},
+
+kotlin: {
+  nome: "Kotlin", pron: "/kót-lin/", ano: 2011, criador: "JetBrains", cat: "Mobile", cor: "#A97BFF", hl: "kotlin", ext: ".kt",
+  tipo: "Compilada (JVM)", tipagem: "Estática", dif: 3,
+  resumo: "Linguagem oficial recomendada pelo Google para apps Android. É mais curta e moderna que Java e funciona junto com ele.",
+  usos: ["Apps Android", "Back-end (Spring, Ktor)", "Apps multiplataforma"],
+  fortes: ["Código mais curto que Java", "Protege contra erros de valor nulo", "Roda tudo que Java roda"],
+  cuidados: ["Melhor aprender com uma IDE como Android Studio ou IntelliJ"],
+  conceitos: {
+    comentario: C`
+// Comentário de uma linha
+/* Comentário de várias linhas */`,
+    imprimir: C`
+fun main() {
+    println("Olá, mundo!")
+}`,
+    variavel: C`
+val nome = "Ana"        // val: não pode mudar
+var idade = 20          // var: pode mudar
+val altura: Double = 1.65
+val ativo = true`,
+    condicao: C`
+val idade = 18
+
+if (idade >= 18) {
+    println("Maior de idade")
+} else if (idade >= 12) {
+    println("Adolescente")
+} else {
+    println("Criança")
+}`,
+    for: C`
+for (i in 0 until 5) {   // 0 até 4
+    println(i)
+}
+
+for (fruta in listOf("maçã", "uva")) {
+    println(fruta)
+}`,
+    while: C`
+var contador = 0
+while (contador < 3) {
+    println(contador)
+    contador++
+}`,
+    funcao: C`
+fun somar(a: Int, b: Int): Int {
+    return a + b
+}
+
+// forma curta
+fun dobro(n: Int) = n * 2`,
+    lista: C`
+val frutas = mutableListOf("maçã", "banana")
+frutas.add("uva")
+println(frutas[0])      // maçã
+println(frutas.size)    // 3`,
+    mapa: C`
+val idades = mutableMapOf("Ana" to 20)
+idades["Bruno"] = 25
+println(idades["Ana"])   // 20`,
+    classe: C`
+class Cachorro(val nome: String) {
+    fun latir() {
+        println("$nome diz: Au au!")
+    }
+}
+
+val rex = Cachorro("Rex")
+rex.latir()`,
+  },
+  extras: [
+    { t: "Texto com variáveis", d: "$variavel ou $\{expressão} dentro das aspas.", c: C`println("Olá, $nome! Ano que vem você terá $\{idade + 1} anos.")` },
+    { t: "when (vários casos)", d: "Substitui vários if/else seguidos.", c: C`
+when (nota) {
+    10 -> println("Perfeito!")
+    in 7..9 -> println("Aprovado")
+    else -> println("Estude mais")
+}` },
+    { t: "Segurança contra nulo", d: "O ? indica que a variável pode ficar vazia (null).", c: C`
+var apelido: String? = null
+println(apelido?.length ?: 0)   // 0, sem travar o programa` },
+    { t: "data class", d: "Classe feita só para guardar dados.", c: C`data class Aluno(val nome: String, val nota: Double)` },
+  ],
+},
+
+swift: {
+  nome: "Swift", pron: "/suíft/", ano: 2014, criador: "Chris Lattner (Apple)", cat: "Mobile", cor: "#F05138", hl: "swift", ext: ".swift",
+  tipo: "Compilada", tipagem: "Estática", dif: 3,
+  resumo: "Linguagem da Apple para criar apps de iPhone, iPad, Mac e Apple Watch. Moderna, segura e de leitura agradável.",
+  usos: ["Apps de iPhone e iPad", "Apps para Mac", "Apple Watch e Apple TV"],
+  fortes: ["Escrita limpa e moderna", "SwiftUI facilita criar telas", "Playgrounds para aprender brincando"],
+  cuidados: ["Para publicar apps é preciso ter um Mac", "Foco quase total no mundo Apple"],
+  conceitos: {
+    comentario: C`
+// Comentário de uma linha
+/* Comentário de várias linhas */`,
+    imprimir: C`print("Olá, mundo!")`,
+    variavel: C`
+let nome = "Ana"          // let: constante (não muda)
+var idade = 20            // var: pode mudar
+let altura: Double = 1.65
+let ativo = true`,
+    condicao: C`
+let idade = 18
+
+if idade >= 18 {
+    print("Maior de idade")
+} else if idade >= 12 {
+    print("Adolescente")
+} else {
+    print("Criança")
+}`,
+    for: C`
+for i in 0..<5 {     // 0 até 4
+    print(i)
+}`,
+    while: C`
+var contador = 0
+while contador < 3 {
+    print(contador)
+    contador += 1
+}`,
+    funcao: C`
+func somar(_ a: Int, _ b: Int) -> Int {
+    return a + b
+}
+
+print(somar(2, 3))   // 5`,
+    lista: C`
+var frutas = ["maçã", "banana"]
+frutas.append("uva")
+print(frutas[0])      // maçã
+print(frutas.count)   // 3`,
+    mapa: C`
+var idades = ["Ana": 20]
+idades["Bruno"] = 25
+print(idades["Ana"] ?? 0)   // 20`,
+    classe: C`
+class Cachorro {
+    var nome: String
+
+    init(nome: String) {
+        self.nome = nome
+    }
+
+    func latir() {
+        print("\(nome) diz: Au au!")
+    }
+}
+
+let rex = Cachorro(nome: "Rex")
+rex.latir()`,
+  },
+  extras: [
+    { t: "Texto com variáveis", d: "Use \\( ) dentro das aspas.", c: C`print("\(nome) tem \(idade) anos")` },
+    { t: "Optional (valor que pode faltar)", d: "O ? indica que pode não haver valor; if let abre com segurança.", c: C`
+var apelido: String? = nil
+
+if let a = apelido {
+    print("Apelido: \(a)")
+} else {
+    print("Sem apelido")
+}` },
+    { t: "Tela simples com SwiftUI", d: "", c: C`
+import SwiftUI
+
+struct ContentView: View {
+    var body: some View {
+        Text("Olá, mundo!")
+            .font(.title)
+    }
+}` },
+  ],
+},
+
+dart: {
+  nome: "Dart", pron: "/dárt/", ano: 2011, criador: "Lars Bak e Kasper Lund (Google)", cat: "Mobile", cor: "#00B4AB", hl: "dart", ext: ".dart",
+  tipo: "Compilada", tipagem: "Estática", dif: 2,
+  resumo: "Linguagem do Google usada no Flutter, que cria apps para Android e iPhone com um único código.",
+  usos: ["Apps Android e iPhone (Flutter)", "Apps web e desktop com Flutter"],
+  fortes: ["Um código só para várias plataformas", "Sintaxe parecida com Java e JavaScript", "Recarrega o app na hora ao salvar"],
+  cuidados: ["Pouco usada fora do Flutter"],
+  conceitos: {
+    comentario: C`
+// Comentário de uma linha
+/* Comentário de várias linhas */
+/// Comentário de documentação`,
+    imprimir: C`
+void main() {
+  print('Olá, mundo!');
+}`,
+    variavel: C`
+var nome = 'Ana';
+int idade = 20;
+double altura = 1.65;
+bool ativo = true;
+final cidade = 'Recife';   // não pode mudar`,
+    condicao: C`
+var idade = 18;
+
+if (idade >= 18) {
+  print('Maior de idade');
+} else if (idade >= 12) {
+  print('Adolescente');
+} else {
+  print('Criança');
+}`,
+    for: C`
+for (var i = 0; i < 5; i++) {
+  print(i);
+}`,
+    while: C`
+var contador = 0;
+while (contador < 3) {
+  print(contador);
+  contador++;
+}`,
+    funcao: C`
+int somar(int a, int b) {
+  return a + b;
+}
+
+// forma curta
+int dobro(int n) => n * 2;`,
+    lista: C`
+var frutas = ['maçã', 'banana'];
+frutas.add('uva');
+print(frutas[0]);       // maçã
+print(frutas.length);   // 3`,
+    mapa: C`
+var idades = {'Ana': 20};
+idades['Bruno'] = 25;
+print(idades['Ana']);   // 20`,
+    classe: C`
+class Cachorro {
+  String nome;
+
+  Cachorro(this.nome);
+
+  void latir() {
+    print('$nome diz: Au au!');
+  }
+}
+
+void main() {
+  var rex = Cachorro('Rex');
+  rex.latir();
+}`,
+  },
+  extras: [
+    { t: "Texto com variáveis", d: "$variavel dentro das aspas.", c: C`print('$nome tem $idade anos');` },
+    { t: "Segurança contra nulo", d: "O ? permite que a variável fique vazia (null).", c: C`
+String? apelido;
+print(apelido ?? 'Sem apelido');` },
+    { t: "Tela simples com Flutter", d: "", c: C`
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MaterialApp(
+    home: Scaffold(
+      body: Center(child: Text('Olá, mundo!')),
+    ),
+  ));
+}` },
+  ],
+},
+
+r: {
+  nome: "R", pron: "/érre/", ano: 1993, criador: "Ross Ihaka e Robert Gentleman", cat: "Dados", cor: "#198CE7", hl: "r", ext: ".R",
+  tipo: "Interpretada", tipagem: "Dinâmica", dif: 3,
+  resumo: "Linguagem feita para estatística e análise de dados. Muito usada em universidades, pesquisas científicas e para criar gráficos.",
+  usos: ["Estatística", "Pesquisa científica", "Gráficos e visualização de dados", "Análise de dados"],
+  fortes: ["Muitos pacotes de estatística prontos", "Gráficos bonitos (ggplot2)", "RStudio é ótimo para iniciantes"],
+  cuidados: ["Listas começam no índice 1, não 0", "Pouco usada fora da área de dados"],
+  conceitos: {
+    comentario: { nota: "R só tem comentário de uma linha.", c: C`# Isto é um comentário` },
+    imprimir: C`
+print("Olá, mundo!")
+cat("Olá, mundo!\n")   # cat não mostra o [1] na frente`,
+    variavel: C`
+nome <- "Ana"      # <- é a forma tradicional de guardar valores
+idade <- 20
+altura <- 1.65
+ativo <- TRUE`,
+    condicao: C`
+idade <- 18
+
+if (idade >= 18) {
+  print("Maior de idade")
+} else if (idade >= 12) {
+  print("Adolescente")
+} else {
+  print("Criança")
+}`,
+    for: C`
+for (i in 1:5) {   # 1 até 5
+  print(i)
+}`,
+    while: C`
+contador <- 0
+while (contador < 3) {
+  print(contador)
+  contador <- contador + 1
+}`,
+    funcao: C`
+somar <- function(a, b) {
+  return(a + b)
+}
+
+print(somar(2, 3))   # 5`,
+    lista: C`
+numeros <- c(10, 20, 30)   # c() cria um vetor
+print(numeros[1])          # 10 (em R a contagem começa em 1!)
+print(length(numeros))     # 3
+print(mean(numeros))       # 20 (média)`,
+    mapa: C`
+pessoa <- list(nome = "Ana", idade = 20)
+print(pessoa$nome)    # Ana
+pessoa$cidade <- "Recife"`,
+    classe: { nota: "R tem vários sistemas de classes. O mais simples se chama <b>S3</b>.", c: C`
+rex <- list(nome = "Rex")
+class(rex) <- "Cachorro"
+
+latir <- function(x) UseMethod("latir")
+latir.Cachorro <- function(x) {
+  cat(x$nome, "diz: Au au!\n")
+}
+
+latir(rex)` },
+  },
+  extras: [
+    { t: "Tabela de dados (data.frame)", d: "A estrutura mais usada em R: parece uma planilha.", c: C`
+alunos <- data.frame(
+  nome = c("Ana", "Bruno"),
+  nota = c(9, 7)
+)
+print(alunos)
+mean(alunos$nota)   # 8` },
+    { t: "Ler um arquivo CSV", d: "", c: C`dados <- read.csv("planilha.csv")` },
+    { t: "Gráficos rápidos", d: "", c: C`
+hist(alunos$nota)                      # histograma
+plot(c(1, 2, 3), c(2, 4, 8), type = "l")   # gráfico de linha` },
+    { t: "Instalar e usar pacotes", d: "", c: C`
+install.packages("ggplot2")
+library(ggplot2)` },
+  ],
+},
+
+lua: {
+  nome: "Lua", pron: "/lú-a/", ano: 1993, criador: "Roberto Ierusalimschy, Luiz Henrique de Figueiredo e Waldemar Celes (PUC-Rio)", cat: "Scripts e jogos", cor: "#000080", hl: "lua", ext: ".lua",
+  tipo: "Interpretada", tipagem: "Dinâmica", dif: 1,
+  resumo: "Linguagem brasileira, criada na PUC-Rio! É pequena, leve e fácil, por isso é muito usada dentro de jogos, como no Roblox (que usa uma versão chamada Luau).",
+  usos: ["Jogos (Roblox, LÖVE, mods)", "Scripts dentro de outros programas", "Configuração de ferramentas (Neovim)"],
+  fortes: ["Muito simples, poucas regras", "Leve e rápida", "Criada no Brasil, com material em português"],
+  cuidados: ["Listas começam no índice 1", "Biblioteca padrão pequena"],
+  conceitos: {
+    comentario: C`
+-- Comentário de uma linha
+
+--[[ Comentário
+     de várias linhas ]]`,
+    imprimir: C`print("Olá, mundo!")`,
+    variavel: C`
+local nome = "Ana"
+local idade = 20
+local ativo = true
+-- use "local" para a variável não ficar global`,
+    condicao: C`
+local idade = 18
+
+if idade >= 18 then
+  print("Maior de idade")
+elseif idade >= 12 then
+  print("Adolescente")
+else
+  print("Criança")
+end`,
+    for: C`
+for i = 1, 5 do   -- 1 até 5
+  print(i)
+end`,
+    while: C`
+local contador = 0
+while contador < 3 do
+  print(contador)
+  contador = contador + 1
+end`,
+    funcao: C`
+local function somar(a, b)
+  return a + b
+end
+
+print(somar(2, 3))   -- 5`,
+    lista: { nota: "Em Lua, listas e dicionários são a mesma coisa: <b>tabelas</b>.", c: C`
+local frutas = {"maçã", "banana"}
+table.insert(frutas, "uva")
+print(frutas[1])   -- maçã (começa em 1!)
+print(#frutas)     -- 3 (# dá o tamanho)` },
+    mapa: C`
+local pessoa = { nome = "Ana", idade = 20 }
+print(pessoa.nome)   -- Ana
+pessoa.cidade = "Recife"`,
+    classe: { nota: "Lua não tem classes. Elas são imitadas com tabelas e <b>metatables</b>.", c: C`
+local Cachorro = {}
+Cachorro.__index = Cachorro
+
+function Cachorro.new(nome)
+  local self = setmetatable({}, Cachorro)
+  self.nome = nome
+  return self
+end
+
+function Cachorro:latir()
+  print(self.nome .. " diz: Au au!")
+end
+
+local rex = Cachorro.new("Rex")
+rex:latir()` },
+  },
+  extras: [
+    { t: "Juntar textos", d: "Em Lua, dois pontos (..) juntam textos.", c: C`print("Olá, " .. nome .. "!")` },
+    { t: "Percorrer tabelas (ipairs e pairs)", d: "ipairs é para listas; pairs é para chave e valor.", c: C`
+for i, fruta in ipairs(frutas) do
+  print(i, fruta)
+end
+
+for chave, valor in pairs(pessoa) do
+  print(chave, valor)
+end` },
+    { t: "Diferente de (~=)", d: "Em Lua, “diferente” se escreve ~= e não !=.", c: C`
+if nome ~= "Ana" then
+  print("Não é a Ana")
+end` },
+  ],
+},
+
+bash: {
+  nome: "Bash", pron: "/béxi/", ano: 1989, criador: "Brian Fox", cat: "Scripts e jogos", cor: "#89E051", hl: "bash", ext: ".sh",
+  tipo: "Interpretada (shell / terminal)", tipagem: "Sem tipos (tudo é texto)", dif: 2,
+  resumo: "A linguagem do terminal do Linux e do Mac. Serve para dar comandos ao sistema e automatizar tarefas repetitivas com scripts.",
+  usos: ["Automatizar tarefas no computador", "Administrar servidores Linux", "Instalar e configurar programas"],
+  fortes: ["Já vem instalado no Linux e no Mac", "Essencial para quem trabalha com servidores"],
+  cuidados: ["Espaços fazem diferença (nome=\"Ana\" funciona; nome = \"Ana\" dá erro)", "Sintaxe estranha para programas grandes"],
+  conceitos: {
+    comentario: C`# Isto é um comentário`,
+    imprimir: C`
+#!/bin/bash
+echo "Olá, mundo!"`,
+    variavel: C`
+nome="Ana"      # sem espaços ao redor do =
+idade=20
+echo "Olá, $nome"`,
+    condicao: C`
+idade=18
+
+if [ $idade -ge 18 ]; then
+  echo "Maior de idade"
+elif [ $idade -ge 12 ]; then
+  echo "Adolescente"
+else
+  echo "Criança"
+fi
+# -ge = maior ou igual, -lt = menor que, -eq = igual`,
+    for: C`
+for i in {1..5}; do
+  echo $i
+done`,
+    while: C`
+contador=0
+while [ $contador -lt 3 ]; do
+  echo $contador
+  contador=$((contador + 1))
+done`,
+    funcao: C`
+somar() {
+  echo $(( $1 + $2 ))   # $1 e $2 são os valores recebidos
+}
+
+somar 2 3   # 5`,
+    lista: C`
+frutas=("maçã" "banana")
+frutas+=("uva")
+echo $\{frutas[0]}      # maçã
+echo $\{#frutas[@]}     # 3`,
+    mapa: C`
+declare -A idades
+idades[Ana]=20
+echo $\{idades[Ana]}    # 20`,
+    classe: { nota: "Bash não tem classes nem objetos. Ele foi feito para automatizar comandos do sistema." },
+  },
+  extras: [
+    { t: "Comandos essenciais do terminal", d: "", c: C`
+pwd                 # mostra a pasta atual
+ls                  # lista arquivos
+cd Documentos       # entra em uma pasta
+cd ..               # volta uma pasta
+mkdir projeto       # cria uma pasta
+cp a.txt b.txt      # copia arquivo
+mv a.txt pasta/     # move ou renomeia
+rm a.txt            # apaga arquivo (sem lixeira!)
+cat a.txt           # mostra o conteúdo` },
+    { t: "Executar um script", d: "chmod +x dá permissão de execução ao arquivo.", c: C`
+chmod +x meu_script.sh
+./meu_script.sh` },
+    { t: "Pipe (|) e redirecionamento (>)", d: "| passa o resultado de um comando para outro; > salva em um arquivo.", c: C`
+ls | grep ".txt"        # lista só arquivos .txt
+echo "olá" > nota.txt   # cria/sobrescreve o arquivo
+echo "mais" >> nota.txt # adiciona no final` },
+    { t: "Ler o que o usuário digita", d: "", c: C`
+read -p "Seu nome: " nome
+echo "Olá, $nome"` },
+  ],
+},
+
+};
+
+/* ===================== OBJETIVOS ===================== */
+const OBJETIVOS = [
+  ["Criar sites (a parte visual)", ["html", "css", "javascript"]],
+  ["Criar a parte de servidor de sites (back-end)", ["javascript", "python", "php", "java", "csharp", "go", "ruby"]],
+  ["Criar apps para Android", ["kotlin", "dart", "java"]],
+  ["Criar apps para iPhone", ["swift", "dart"]],
+  ["Criar jogos", ["csharp", "cpp", "lua"]],
+  ["Trabalhar com dados, estatística e IA", ["python", "sql", "r"]],
+  ["Automatizar tarefas do computador", ["python", "bash"]],
+  ["Programas muito rápidos, sistemas e hardware", ["c", "cpp", "rust", "go"]],
+  ["Trabalhar em grandes empresas e bancos", ["java", "csharp", "sql"]],
+];
+
+/* ===================== GLOSSÁRIO ===================== */
+const GLOSSARIO = [
+  ["Algoritmo", "", "Uma sequência de passos para resolver um problema, como uma receita de bolo. Todo programa é um algoritmo escrito numa linguagem que o computador entende."],
+  ["API", "Application Programming Interface", "Uma “porta de comunicação” entre programas. Por exemplo, um app de clima pede a previsão para a API de um serviço meteorológico."],
+  ["Back-end", "", "A parte do sistema que roda no servidor e o usuário não vê: banco de dados, regras, login. Linguagens comuns: Python, Java, PHP, JavaScript (Node.js)."],
+  ["Banco de dados", "", "Lugar organizado onde um sistema guarda suas informações, normalmente em tabelas. Conversamos com ele usando SQL."],
+  ["Biblioteca", "library", "Código pronto, escrito por outras pessoas, que você pode usar no seu programa para não começar do zero."],
+  ["Booleano", "bool", "Tipo de dado que só tem dois valores: verdadeiro (true) ou falso (false)."],
+  ["Bug", "", "Um erro no programa. “Debugar” (depurar) é encontrar e corrigir esse erro."],
+  ["Classe", "", "Um molde que descreve como um tipo de objeto é: que dados ele guarda e o que ele sabe fazer."],
+  ["Compilador", "", "Programa que traduz todo o seu código para a linguagem da máquina antes de rodar. Usado em C, C++, Rust, Go."],
+  ["Condição", "if / else", "Uma pergunta de sim ou não que decide qual parte do código será executada."],
+  ["Framework", "", "Uma estrutura pronta que organiza o seu projeto e já traz muitas funções. Exemplos: React (JavaScript), Django (Python), Laravel (PHP), Flutter (Dart)."],
+  ["Front-end", "", "A parte do sistema que o usuário vê e com que interage: telas, botões, cores. Feito com HTML, CSS e JavaScript."],
+  ["Função", "função, método", "Bloco de código com nome que executa uma tarefa. Você escreve uma vez e usa quantas vezes quiser."],
+  ["Git", "", "Ferramenta que guarda o histórico de mudanças do seu código, permitindo voltar versões e trabalhar em equipe. O GitHub é um site que hospeda projetos Git."],
+  ["IDE / Editor", "", "Programa onde você escreve código. Exemplos: VS Code, IntelliJ, PyCharm, Android Studio."],
+  ["Índice", "index", "A posição de um item numa lista. Na maioria das linguagens começa em 0 (o primeiro item é o 0)."],
+  ["Interpretador", "", "Programa que lê e executa o código linha por linha, sem uma etapa de compilação antes. Usado em Python, Ruby, PHP."],
+  ["Laço", "loop", "Estrutura que repete um trecho de código várias vezes. Os mais comuns são for e while."],
+  ["Lista / Array", "", "Estrutura que guarda vários valores em ordem, dentro de uma única variável."],
+  ["Objeto", "", "Algo criado a partir de uma classe. Se a classe é “Cachorro”, o objeto pode ser o “Rex”."],
+  ["Parâmetro", "argumento", "Valor que você entrega para uma função trabalhar. Em somar(2, 3), o 2 e o 3 são os argumentos."],
+  ["Sintaxe", "", "As regras de escrita de uma linguagem: onde vão parênteses, chaves, ponto e vírgula etc. Um erro de sintaxe impede o programa de rodar."],
+  ["String", "texto", "Tipo de dado que representa texto. Normalmente fica entre aspas: \"Olá\"."],
+  ["Terminal", "console, linha de comando", "Janela onde você digita comandos em texto para o computador, em vez de clicar."],
+  ["Tipagem dinâmica", "", "A linguagem descobre o tipo da variável sozinha enquanto o programa roda. Ex.: Python, JavaScript."],
+  ["Tipagem estática", "", "O tipo da variável é definido antes de rodar, e o compilador avisa erros cedo. Ex.: Java, C#, TypeScript."],
+  ["Tipo de dado", "", "O “formato” de um valor: texto (string), número inteiro (int), decimal (float), verdadeiro/falso (bool)."],
+  ["Variável", "", "Um nome que guarda um valor na memória para ser usado e alterado depois."],
+];
+
+/* ===================== APLICAÇÃO ===================== */
+const ORDEM = Object.keys(L);
+const $ = (s) => document.querySelector(s);
+const main = $("#conteudo");
+const CODES = [];
+
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const norm = (s) => String(s).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+
+function realce(code, hl) {
+  try {
+    if (window.hljs && hljs.getLanguage(hl)) return hljs.highlight(code, { language: hl, ignoreIllegals: true }).value;
+  } catch (e) {}
+  return esc(code);
+}
+
+function bloco(code, hl, rotulo) {
+  const i = CODES.push(code) - 1;
+  return `<div class="codigo"><div class="codigo-barra"><span>${esc(rotulo)}</span><button class="copiar" type="button" data-i="${i}">Copiar</button></div><pre><code>${realce(code, hl)}</code></pre></div>`;
+}
+
+function barras(n) {
+  let s = "";
+  for (let i = 1; i <= 5; i++) s += `<i class="${i <= n ? "on" : ""}"></i>`;
+  return `<span class="dific"><span class="barras" aria-hidden="true">${s}</span>${DIF[n]}</span>`;
+}
+
+const dot = (id) => `<span class="dot" style="background:${L[id].cor}"></span>`;
+const pil = (id) => `<a class="pilula" href="#${id}">${dot(id)}${esc(L[id].nome)}</a>`;
+
+function conc(id, k) {
+  const v = L[id].conceitos && L[id].conceitos[k];
+  if (v == null) return null;
+  return typeof v === "string" ? { c: v } : v;
+}
+
+/* ---------- Menu lateral ---------- */
+const ESCUROS = ["rust", "bash", "lua"];
+function logo(id) {
+  if (id === "sql") return `<svg class="logo logo-sql" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>`;
+  const src = window.LOGOS && window.LOGOS[id];
+  return src ? `<img class="logo${ESCUROS.includes(id) ? " escuro" : ""}" src="${src}" alt="">` : dot(id);
+}
+
+function montarLateral() {
+  $("#lateral").innerHTML = `<div class="lateral-cab"><strong>Linguagens</strong><button class="icone-btn fechar" type="button" aria-label="Fechar menu"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>` + CATS.map((cat) => {
+    const itens = ORDEM.filter((id) => L[id].cat === cat);
+    return `<div class="grupo"><h4>${cat}</h4>${itens.map((id) => `<a href="#${id}" data-id="${id}">${logo(id)}${esc(L[id].nome)}</a>`).join("")}</div>`;
+  }).join("");
+}
+
+function marcarAtivo(id, secao) {
+  document.querySelectorAll("#lateral a").forEach((a) => a.classList.toggle("ativo", a.dataset.id === id));
+  document.querySelectorAll(".links a").forEach((a) => a.classList.toggle("ativo", a.dataset.r === secao));
+}
+
+/* ---------- Início ---------- */
+function pagInicio() {
+  const linhas = OBJETIVOS.map(([obj, ids]) => `<tr><td>${obj}</td><td><div class="pilulas">${ids.map(pil).join("")}</div></td></tr>`).join("");
+  const cartoes = ORDEM.map((id) => {
+    const l = L[id];
+    return `<a class="cartao" href="#${id}">
+      <div class="cartao-topo">${dot(id)}<h3>${esc(l.nome)}</h3><span class="ext">${l.ext}</span></div>
+      <p>${esc(l.usos.slice(0, 3).join(" · "))}</p>
+      ${barras(l.dif)}
+    </a>`;
+  }).join("");
+
+  main.innerHTML = `
+    <section class="hero">
+      <span class="rotulo">Manual de consulta para iniciantes</span>
+      <h1>Dicionário do Programador</h1>
+      <p>${ORDEM.length} linguagens explicadas em português: para que cada uma serve, como se escreve e os comandos principais com exemplos prontos para copiar.</p>
+      <div class="verbete-modelo"><b>variável</b> <i>s.f.</i> · Uma “caixinha” com nome que guarda um valor. <span>Ex.: <b>nome = "Ana"</b></span></div>
+    </section>
+
+    <section class="secao">
+      <div class="secao-cab">
+        <h2>Qual linguagem aprender?</h2>
+        <p class="leve">Escolha pelo que você quer construir.</p>
+      </div>
+      <div class="tabela-wrap"><table>
+        <thead><tr><th>Eu quero…</th><th>Linguagens indicadas</th></tr></thead>
+        <tbody>${linhas}</tbody>
+      </table></div>
+      <div class="aviso">
+        <h3>Não sabe por onde começar?</h3>
+        <p class="prosa">Comece por <a href="#python">Python</a>, que tem a escrita mais simples. Se o seu sonho é criar sites, comece por <a href="#html">HTML</a>, depois <a href="#css">CSS</a> e então <a href="#javascript">JavaScript</a>. Os conceitos (variável, condição, laço, função) são os mesmos em todas as linguagens. Use a página <a href="#comparar">Comparar</a> para ver isso na prática.</p>
+      </div>
+    </section>
+
+    <section class="secao">
+      <div class="secao-cab">
+        <h2>Todas as linguagens</h2>
+        <p class="leve">A barrinha mostra a dificuldade para quem está começando.</p>
+      </div>
+      <div class="grade">${cartoes}</div>
+    </section>
+    ${rodape()}`;
+  marcarAtivo(null, "inicio");
+}
+
+/* ---------- Página da linguagem ---------- */
+function verbete(id, anc, titulo, termo, desc, item) {
+  const l = L[id];
+  let corpo = "";
+  if (item.nota) corpo += `<p class="nota">${item.nota}</p>`;
+  if (item.c) corpo += bloco(item.c, item.hl || l.hl, item.hl && item.hl !== l.hl ? (item.hl === "bash" ? "Terminal" : item.hl.toUpperCase()) : l.nome);
+  return `<article class="verbete" id="${anc}">
+    <div class="vb-cab"><h3>${esc(titulo)}</h3>${termo ? `<span class="termo">${esc(termo)}</span>` : ""}</div>
+    ${desc ? `<p class="vb-desc">${esc(desc)}</p>` : ""}
+    ${corpo}
+  </article>`;
+}
+
+function pagLinguagem(id) {
+  const l = L[id];
+  const idx = ORDEM.indexOf(id);
+  const ant = ORDEM[(idx - 1 + ORDEM.length) % ORDEM.length];
+  const prox = ORDEM[(idx + 1) % ORDEM.length];
+
+  let indice = [], secoes = "";
+  if (l.marcacao) {
+    indice = l.comandos.map((it, i) => [`${id}-c${i}`, it.t.split(":")[0]]);
+    secoes = `<section class="secao"><div class="secao-cab"><h2>Principais comandos</h2></div>
+      <div class="verbetes">${l.comandos.map((it, i) => verbete(id, `${id}-c${i}`, it.t, "", it.d, it)).join("")}</div></section>`;
+  } else {
+    indice = CONCEITOS.map((k) => [`${id}-${k.k}`, k.t]);
+    secoes = `<section class="secao"><div class="secao-cab"><h2>Comandos básicos</h2>
+        <p class="leve">Os mesmos conceitos aparecem em todas as linguagens. <a href="#comparar">Compare lado a lado</a>.</p></div>
+      <div class="verbetes">${CONCEITOS.map((k) => {
+        const it = conc(id, k.k);
+        return it ? verbete(id, `${id}-${k.k}`, k.t, "", k.d, it) : "";
+      }).join("")}</div></section>`;
+    if (l.extras && l.extras.length) {
+      secoes += `<section class="secao"><div class="secao-cab"><h2>Mais comandos úteis</h2></div>
+        <div class="verbetes">${l.extras.map((it, i) => verbete(id, `${id}-x${i}`, it.t, "", it.d, it)).join("")}</div></section>`;
+      indice = indice.concat(l.extras.map((it, i) => [`${id}-x${i}`, it.t]));
+    }
+  }
+
+  main.innerHTML = `
+    <section class="lp-cab">
+      <div class="lp-nome">${logo(id)}<h1>${esc(l.nome)}</h1><span class="pron">${esc(l.pron)}</span></div>
+      <p class="classe-gram">${esc(l.tipo.toLowerCase())} · criada em ${l.ano} por ${esc(l.criador)}</p>
+      <p class="resumo">${esc(l.resumo)}</p>
+      <dl class="ficha">
+        <div><dt>Categoria</dt><dd>${esc(l.cat)}</dd></div>
+        <div><dt>Tipagem</dt><dd>${esc(l.tipagem)}</dd></div>
+        <div><dt>Arquivos</dt><dd><code>${esc(l.ext)}</code></dd></div>
+        <div><dt>Dificuldade</dt><dd>${barras(l.dif)}</dd></div>
+      </dl>
+      <div class="colunas">
+        <div><span class="rotulo">Indicada para</span><div class="pilulas" style="margin-top:8px">${l.usos.map((u) => `<span class="pilula">${esc(u)}</span>`).join("")}</div></div>
+        <div class="mais"><span class="rotulo">Pontos fortes</span><ul>${l.fortes.map((f) => `<li>${esc(f)}</li>`).join("")}</ul></div>
+        <div class="menos"><span class="rotulo">Atenção</span><ul>${l.cuidados.map((f) => `<li>${esc(f)}</li>`).join("")}</ul></div>
+      </div>
+    </section>
+
+    <section class="secao">
+      <span class="rotulo">Nesta página</span>
+      <nav class="indice" aria-label="Comandos desta linguagem">${indice.map(([a, t]) => `<a href="#${a}">${esc(t)}</a>`).join("")}</nav>
+    </section>
+
+    ${secoes}
+
+    <nav class="navega" aria-label="Outras linguagens">
+      <a href="#${ant}"><span class="rotulo">← Anterior</span>${esc(L[ant].nome)}</a>
+      <a href="#${prox}"><span class="rotulo">Próxima →</span>${esc(L[prox].nome)}</a>
+    </nav>
+    ${rodape()}`;
+  marcarAtivo(id, null);
+}
+
+/* ---------- Comparar ---------- */
+function pagComparar(k) {
+  const conceito = CONCEITOS.find((c) => c.k === k) || CONCEITOS[1];
+  const ordemMenu = CATS.flatMap((cat) => ORDEM.filter((id) => L[id].cat === cat));
+  const itens = ordemMenu.map((id) => {
+    const it = conc(id, conceito.k);
+    let corpo = "";
+    if (!it) corpo = `<p class="nota">${esc(L[id].semConceito || `Não existe em ${L[id].nome}.`)}</p>`;
+    else {
+      if (it.nota) corpo += `<p class="nota">${it.nota}</p>`;
+      if (it.c) corpo += bloco(it.c, L[id].hl, L[id].nome);
+    }
+    return `<div class="comp-item"><a href="#${L[id].marcacao ? id : `${id}-${conceito.k}`}">${dot(id)}${esc(L[id].nome)}</a>${corpo}</div>`;
+  }).join("");
+
+  main.innerHTML = `
+    <section class="hero">
+      <span class="rotulo">Comparar linguagens</span>
+      <h1>${esc(conceito.t)}</h1>
+      <p>${esc(conceito.d)}</p>
+    </section>
+    <section class="secao">
+      <nav class="conceitos" aria-label="Escolha o conceito">${CONCEITOS.map((c) => `<a href="#comparar-${c.k}" class="${c.k === conceito.k ? "ativo" : ""}">${esc(c.t)}</a>`).join("")}</nav>
+      <p class="leve">HTML, CSS e SQL não são linguagens de programação de uso geral. Quando um conceito não existe nelas, o cartão explica o porquê.
+      <div class="comp">${itens}</div>
+    </section>
+    ${rodape()}`;
+  marcarAtivo(null, "comparar");
+}
+
+/* ---------- Glossário ---------- */
+function pagGlossario() {
+  const ordenado = GLOSSARIO.slice().sort((a, b) => a[0].localeCompare(b[0], "pt"));
+  let html = "", letra = "";
+  ordenado.forEach(([termo, aka, def]) => {
+    const l1 = norm(termo)[0].toUpperCase();
+    if (l1 !== letra) {
+      if (letra) html += `</dl>`;
+      letra = l1;
+      html += `<div class="letra">${l1}</div><dl class="gloss">`;
+    }
+    html += `<div id="g-${norm(termo).replace(/[^a-z0-9]+/g, "-")}"><dt>${esc(termo)}${aka ? `<small>${esc(aka)}</small>` : ""}</dt><dd>${esc(def)}</dd></div>`;
+  });
+  html += `</dl>`;
+  main.innerHTML = `
+    <section class="hero">
+      <span class="rotulo">Glossário</span>
+      <h1>Palavras que todo iniciante ouve</h1>
+      <p>Termos da programação explicados de forma simples, em ordem alfabética.</p>
+    </section>
+    <section class="secao" style="gap:0">${html}</section>
+    ${rodape()}`;
+  marcarAtivo(null, "glossario");
+}
+
+/* ---------- Busca ---------- */
+const INDICE = [];
+function montarIndice() {
+  ORDEM.forEach((id) => {
+    const l = L[id];
+    INDICE.push({ id, alvo: id, titulo: l.nome, sub: l.resumo, texto: [l.nome, l.resumo, l.usos.join(" "), l.cat].join(" ") });
+    if (l.marcacao) {
+      l.comandos.forEach((it, i) => INDICE.push({ id, alvo: `${id}-c${i}`, titulo: it.t, sub: it.d || it.c.split("\n")[0], texto: [it.t, it.d, it.c].join(" ") }));
+    } else {
+      CONCEITOS.forEach((k) => {
+        const it = conc(id, k.k);
+        if (it) INDICE.push({ id, alvo: `${id}-${k.k}`, titulo: k.t, sub: (it.c || "").split("\n").find((x) => x.trim()) || "", texto: [k.t, k.d, it.c || "", it.nota || ""].join(" ") });
+      });
+      (l.extras || []).forEach((it, i) => INDICE.push({ id, alvo: `${id}-x${i}`, titulo: it.t, sub: it.d || it.c.split("\n")[0], texto: [it.t, it.d, it.c].join(" ") }));
+    }
+  });
+  GLOSSARIO.forEach(([t, aka, d]) => INDICE.push({ id: null, alvo: "glossario", titulo: t, sub: d, texto: [t, aka, d].join(" ") }));
+  INDICE.forEach((e) => (e.n = norm(e.texto)));
+}
+
+function destacar(texto, termos) {
+  let s = esc(texto);
+  termos.forEach((t) => {
+    if (!t) return;
+    const re = new RegExp("(" + t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ")", "ig");
+    s = s.replace(re, "<mark>$1</mark>");
+  });
+  return s;
+}
+
+function pagBusca(q) {
+  const termos = norm(q).split(/\s+/).filter(Boolean);
+  const res = INDICE.filter((e) => termos.every((t) => e.n.includes(t)))
+    .map((e) => ({ e, peso: termos.reduce((p, t) => p + (norm(e.titulo).includes(t) ? 2 : 0) + (e.id && norm(L[e.id].nome).includes(t) ? 1 : 0), 0) }))
+    .sort((a, b) => b.peso - a.peso)
+    .slice(0, 80);
+
+  const lista = res.map(({ e }) => `
+    <a class="res" href="#${e.alvo}">
+      ${e.id ? dot(e.id) : `<span class="dot" style="background:var(--muted)"></span>`}
+      <strong>${destacar(e.titulo, q.split(/\s+/))} <small class="leve">· ${e.id ? esc(L[e.id].nome) : "Glossário"}</small></strong>
+      <span class="sub">${esc(e.sub)}</span>
+    </a>`).join("");
+
+  main.innerHTML = `
+    <section class="secao" style="margin-top:0">
+      <div class="secao-cab">
+        <span class="rotulo">Busca</span>
+        <h2>${res.length ? `${res.length} resultado${res.length > 1 ? "s" : ""} para “${esc(q)}”` : `Nada encontrado para “${esc(q)}”`}</h2>
+        ${res.length ? "" : `<p class="leve">Tente outra palavra, como <code>print</code>, <code>lista</code>, <code>função</code> ou <code>SELECT</code>.</p>`}
+      </div>
+      <div class="resultados">${lista}</div>
+    </section>`;
+  marcarAtivo(null, null);
+}
+
+/* ---------- Rodapé ---------- */
+const rodape = () => `<footer>Dicionário do Programador · material de estudo para iniciantes. Os exemplos são simplificados para facilitar o aprendizado.</footer>`;
+
+/* ---------- Rotas ---------- */
+let atual = null;
+function rota() {
+  const h = decodeURIComponent(location.hash.slice(1));
+  const busca = $("#busca");
+  if (busca.value) busca.value = "";
+  CODES.length = 0;
+  const base = h.split("-")[0];
+
+  if (!h) { atual = null; pagInicio(); window.scrollTo(0, 0); return; }
+  if (h === "comparar" || h.startsWith("comparar-")) { atual = null; pagComparar(h.split("-")[1]); window.scrollTo(0, 0); return; }
+  if (h === "glossario") { atual = null; pagGlossario(); window.scrollTo(0, 0); return; }
+  if (L[base]) {
+    if (atual !== base || !main.querySelector(".lp-cab")) { pagLinguagem(base); atual = base; }
+    const alvo = h !== base ? document.getElementById(h) : null;
+    if (alvo) alvo.scrollIntoView({ block: "start" }); else window.scrollTo(0, 0);
+    return;
+  }
+  atual = null; pagInicio();
+}
+
+/* ---------- Eventos ---------- */
+let tempo;
+$("#busca").addEventListener("input", (e) => {
+  clearTimeout(tempo);
+  const q = e.target.value.trim();
+  tempo = setTimeout(() => {
+    CODES.length = 0;
+    if (q) { atual = null; pagBusca(q); window.scrollTo(0, 0); }
+    else { atual = null; rota(); }
+  }, 120);
+});
+
+document.addEventListener("click", (e) => {
+  const b = e.target.closest(".copiar");
+  if (!b) return;
+  const texto = CODES[+b.dataset.i];
+  const ok = () => { b.textContent = "Copiado!"; b.classList.add("feito"); setTimeout(() => { b.textContent = "Copiar"; b.classList.remove("feito"); }, 1500); };
+  const selecionar = () => {
+    const code = b.closest(".codigo").querySelector("code");
+    const r = document.createRange(); r.selectNodeContents(code);
+    const s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+    b.textContent = "Use Ctrl+C";
+  };
+  try { navigator.clipboard.writeText(texto).then(ok, selecionar); } catch (err) { selecionar(); }
+});
+
+window.addEventListener("hashchange", rota);
+
+/* ---------- Menu (três risquinhos) ---------- */
+const lateral = $("#lateral"), veu = $("#veu"), menuBtn = $("#menuBtn");
+function abrirMenu(abrir) {
+  lateral.classList.toggle("aberto", abrir);
+  veu.hidden = !abrir;
+  menuBtn.setAttribute("aria-expanded", String(abrir));
+  if (abrir) {
+    const a = lateral.querySelector("a.ativo") || lateral.querySelector("a");
+    if (a) a.focus({ preventScroll: true });
+  } else if (lateral.contains(document.activeElement)) {
+    menuBtn.focus();
+  }
+}
+menuBtn.addEventListener("click", () => abrirMenu(!lateral.classList.contains("aberto")));
+veu.addEventListener("click", () => abrirMenu(false));
+lateral.addEventListener("click", (e) => { if (e.target.closest("a, .fechar")) abrirMenu(false); });
+document.addEventListener("keydown", (e) => { if (e.key === "Escape" && lateral.classList.contains("aberto")) abrirMenu(false); });
+
+montarLateral();
+montarIndice();
+rota();
+</script>
+</body>
+</html>
