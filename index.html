@@ -180,6 +180,8 @@ p { margin: 0; }
 .hero { padding-block: 12px 32px; border-bottom: 1px solid var(--line); display: grid; gap: 12px; }
 .hero h1 { font-size: clamp(32px, 5vw, 52px); }
 .hero p { font-size: 17px; color: var(--muted); max-width: 60ch; }
+.hero .autoria { font-size: 14px; margin-top: -4px; }
+.hero .autoria strong { color: var(--fg); font-weight: 600; }
 .verbete-modelo {
   margin-top: 8px; font-family: var(--f-mono); font-size: 13px; color: var(--muted);
   padding: 12px 14px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); max-width: 620px;
@@ -363,6 +365,7 @@ mark { background: var(--accent-soft); color: var(--accent); border-radius: 3px;
 .navega a:hover { border-color: var(--accent); }
 .navega a:last-child { text-align: right; margin-left: auto; }
 
+footer strong { color: var(--fg); font-weight: 600; }
 footer { margin-top: 60px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); }
 
 /* ---------- Responsivo ---------- */
@@ -2341,6 +2344,7 @@ function pagInicio() {
     <section class="hero">
       <span class="rotulo">Manual de consulta para iniciantes</span>
       <h1>Dicionário do Programador</h1>
+      <p class="autoria">Criado por <strong>Júlio Monteiro Assoni</strong></p>
       <p>${ORDEM.length} linguagens explicadas em português: para que cada uma serve, como se escreve e os comandos principais com exemplos prontos para copiar.</p>
       <div class="verbete-modelo"><b>variável</b> <i>s.f.</i> · Uma “caixinha” com nome que guarda um valor. <span>Ex.: <b>nome = "Ana"</b></span></div>
     </section>
@@ -2363,7 +2367,6 @@ function pagInicio() {
     <section class="secao">
       <div class="secao-cab">
         <h2>Todas as linguagens</h2>
-        <p class="leve">A barrinha mostra a dificuldade para quem está começando.</p>
       </div>
       <div class="grade">${cartoes}</div>
     </section>
@@ -2579,12 +2582,13 @@ function pagBusca(q) {
         ${res.length ? "" : `<p class="leve">Tente outra palavra, como <code>print</code>, <code>lista</code>, <code>função</code> ou <code>SELECT</code>.</p>`}
       </div>
       <div class="resultados">${lista}</div>
-    </section>`;
+    </section>
+    ${rodape()}`;
   marcarAtivo(null, null);
 }
 
 /* ---------- Rodapé ---------- */
-const rodape = () => `<footer>Dicionário do Programador · material de estudo para iniciantes. Os exemplos são simplificados para facilitar o aprendizado.</footer>`;
+const rodape = () => `<footer>Dicionário do Programador · criado por <strong>Júlio Monteiro Assoni</strong> · material de estudo para iniciantes. Os exemplos são simplificados para facilitar o aprendizado.</footer>`;
 
 /* ---------- Rotas ---------- */
 let atual = null;
