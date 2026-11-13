@@ -1,6 +1,8 @@
 # Dicionário do Programador
 
-**Acesse o app:** https://claude.ai/artifact/BqHgr7iF5q4cGxTdkDwRsQ
+**Acesse o app:** https://juliomonteiro25.github.io/dev-nary/
+
+Também disponível em: https://claude.ai/artifact/BqHgr7iF5q4cGxTdkDwRsQ
 
 Manual de consulta gratuito para quem está começando a programar. Reúne 20 linguagens explicadas em português, com os comandos principais e exemplos prontos para copiar.
 
@@ -13,6 +15,10 @@ Manual de consulta gratuito para quem está começando a programar. Reúne 20 li
 - **Glossário:** termos que todo iniciante ouve, explicados de forma simples.
 - **Busca:** encontra comandos e termos em todas as linguagens.
 - Funciona no computador, no tablet e no celular, nos temas claro e escuro.
+
+## Como usar
+
+Baixe os arquivos e abra o `index.html` no navegador. Não precisa instalar nada.
 
 ## Arquivos
 
