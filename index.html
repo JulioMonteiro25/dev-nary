@@ -11,6 +11,7 @@ img { max-width: 100%; }
 </style>
 <title>Dicionário do Programador</title>
 <meta name="claude:viewport-fit-sides" content="cover">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1024 1024'><defs><linearGradient id='g' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='%230E172A'/><stop offset='1' stop-color='%23030712'/></linearGradient></defs><rect width='1024' height='1024' rx='225' fill='url(%23g)'/><rect x='150' y='230' width='724' height='564' rx='50' fill='%23111827' stroke='%23334155' stroke-width='8'/><circle cx='210' cy='284' r='13' fill='%23F87171'/><circle cx='256' cy='284' r='13' fill='%23FBBF24'/><circle cx='302' cy='284' r='13' fill='%2334D399'/><polygon points='301,452 437,505 437,533 301,586 301,553 404,519 301,485' fill='%2334D399'/><rect x='447' y='636' width='156' height='25' fill='%2334D399'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap">
@@ -99,10 +100,8 @@ body::before {
   display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--fg);
   font-family: var(--f-display); font-weight: 700; font-size: 18px; letter-spacing: -0.01em; white-space: nowrap;
 }
-.marca-icone {
-  display: grid; place-items: center; width: 34px; height: 34px; border-radius: 8px;
-  background: var(--fg); color: var(--bg); font-family: var(--f-mono); font-size: 14px; font-weight: 600;
-}
+.marca-icone { display: block; width: 36px; height: 36px; flex: none; }
+.marca-icone svg { display: block; width: 100%; height: 100%; }
 .busca { flex: 1; max-width: 460px; position: relative; }
 .busca input {
   width: 100%; height: 40px; border-radius: 8px; border: 1px solid var(--line);
@@ -385,7 +384,7 @@ footer { margin-top: 60px; padding-top: 20px; border-top: 1px solid var(--line);
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
     </button>
     <a class="marca" href="#" aria-label="Dicionário do Programador, página inicial">
-      <span class="marca-icone">{ }</span><span class="marca-texto">Dicionário do Programador</span>
+      <span class="marca-icone"><svg viewBox="0 0 1024 1024" aria-hidden="true"><defs><linearGradient id="ic-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0E172A"/><stop offset="1" stop-color="#030712"/></linearGradient></defs><rect width="1024" height="1024" rx="225" fill="url(#ic-g)"/><rect x="150" y="230" width="724" height="564" rx="50" fill="#111827" stroke="#334155" stroke-width="8"/><circle cx="210" cy="284" r="13" fill="#F87171"/><circle cx="256" cy="284" r="13" fill="#FBBF24"/><circle cx="302" cy="284" r="13" fill="#34D399"/><polygon points="301,452 437,505 437,533 301,586 301,553 404,519 301,485" fill="#34D399"/><rect x="447" y="636" width="156" height="25" fill="#34D399"/></svg></span><span class="marca-texto">Dicionário do Programador</span>
     </a>
     <label class="busca" for="busca">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
