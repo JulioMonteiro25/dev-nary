@@ -1,5 +1,7 @@
 # Dicionário do Programador
 
+**Acesse o app:** https://claude.ai/artifact/BqHgr7iF5q4cGxTdkDwRsQ
+
 Manual de consulta gratuito para quem está começando a programar. Reúne 20 linguagens explicadas em português, com os comandos principais e exemplos prontos para copiar.
 
 ## O que tem no site
@@ -14,7 +16,7 @@ Manual de consulta gratuito para quem está começando a programar. Reúne 20 li
 
 ## Como usar
 
-Abra o site pelo GitHub Pages ou baixe os arquivos e abra o `index.html` no navegador. Não precisa instalar nada.
+Baixe os arquivos e abra o `index.html` no navegador. Não precisa instalar nada.
 
 ## Arquivos
 
